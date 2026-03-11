@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MailForge — Advanced Email Marketing Platform</title>
+    <title>MailForge — AI-Powered Email Marketing Platform</title>
+    <meta name="description" content="MailForge: AI-powered email marketing with 99.7% deliverability, predictive send times, behavioral automation, and hyper-personalization. Start free.">
+    <meta name="keywords" content="email marketing, email automation, AI email, email campaigns, newsletter platform">
+    <meta property="og:title" content="MailForge — Email Marketing That Actually Converts">
+    <meta property="og:description" content="AI-powered campaigns, behavioral automation, predictive analytics. 99.7% deliverability. Start your free trial.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abbakar481.github.io/email-marketing/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MailForge — AI-Powered Email Marketing">
+    <meta name="twitter:description" content="AI-powered campaigns, behavioral automation, predictive analytics. Start free.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236366F1'/><text x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='18'>✉</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Preloader -->
     <div id="preloader">
-        <div class="loader-ring">
-            <div class="loader-ring-inner"></div>
-        </div>
+        <div class="loader-ring"></div>
         <p class="loader-text">Loading MailForge</p>
     </div>
 
-    <!-- Floating Particles Background -->
+    <!-- Particles -->
     <canvas id="particles-canvas"></canvas>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V4M10 4L5 9M10 4L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
@@ -26,30 +40,25 @@
             <a href="#" class="nav-logo">
                 <div class="logo-icon">
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                        <rect width="32" height="32" rx="8" fill="url(#lg1)"/>
                         <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
                         <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        <defs>
-                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
-                                <stop stop-color="#6366F1"/>
-                                <stop offset="1" stop-color="#8B5CF6"/>
-                            </linearGradient>
-                        </defs>
+                        <defs><linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
                     </svg>
                 </div>
                 <span class="logo-text">Mail<span class="logo-accent">Forge</span></span>
             </a>
             <div class="nav-links" id="navLinks">
                 <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
                 <a href="#automation" class="nav-link">Automation</a>
                 <a href="#templates" class="nav-link">Templates</a>
                 <a href="#analytics" class="nav-link">Analytics</a>
                 <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#integrations" class="nav-link">Integrations</a>
             </div>
             <div class="nav-actions">
                 <button class="btn-ghost" onclick="openModal('loginModal')">Log In</button>
-                <button class="btn-primary" onclick="openModal('signupModal')">Start Free Trial</button>
+                <button class="btn-primary btn-sm" onclick="openModal('signupModal')">Start Free Trial</button>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -57,7 +66,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ===== HERO ===== -->
     <section class="hero" id="hero">
         <div class="hero-bg-shapes">
             <div class="shape shape-1"></div>
@@ -66,28 +75,28 @@
         </div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge" data-aos="fade-up">
+                <div class="hero-badge animate-on-scroll">
                     <span class="badge-dot"></span>
                     <span>Trusted by 50,000+ marketers worldwide</span>
                 </div>
-                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                <h1 class="hero-title animate-on-scroll">
                     Email Marketing That<br>
-                    <span class="gradient-text">Actually Converts</span>
+                    <span class="gradient-text typing-text" id="heroTyping">Actually Converts</span>
                 </h1>
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                <p class="hero-subtitle animate-on-scroll">
                     AI-powered campaigns, hyper-personalization, predictive send times, and behavioral automation — everything you need to outperform every other platform in your stack.
                 </p>
-                <div class="hero-cta" data-aos="fade-up" data-aos-delay="300">
+                <div class="hero-cta animate-on-scroll">
                     <button class="btn-primary btn-lg" onclick="openModal('signupModal')">
                         Start Free — No Card Required
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
                     <button class="btn-outline btn-lg" onclick="openModal('demoModal')">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5L15 10L8 15V5Z" fill="currentColor"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7.5L13 10L8.5 12.5V7.5Z" fill="currentColor"/></svg>
                         Watch Demo
                     </button>
                 </div>
-                <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+                <div class="hero-stats animate-on-scroll">
                     <div class="stat">
                         <span class="stat-number" data-count="99.7">0</span><span class="stat-suffix">%</span>
                         <span class="stat-label">Deliverability</span>
@@ -104,14 +113,10 @@
                     </div>
                 </div>
             </div>
-            <div class="hero-visual" data-aos="fade-left" data-aos-delay="300">
+            <div class="hero-visual animate-on-scroll">
                 <div class="dashboard-preview">
                     <div class="preview-header">
-                        <div class="preview-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
+                        <div class="preview-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
                         <span class="preview-title">MailForge Dashboard</span>
                     </div>
                     <div class="preview-body">
@@ -120,36 +125,35 @@
                                 <span>Campaign Performance</span>
                                 <span class="chart-badge up">↑ 24.5%</span>
                             </div>
-                            <div class="chart-bars">
-                                <div class="bar" style="--height: 45%"><span>Mon</span></div>
-                                <div class="bar" style="--height: 65%"><span>Tue</span></div>
-                                <div class="bar" style="--height: 50%"><span>Wed</span></div>
-                                <div class="bar" style="--height: 80%"><span>Thu</span></div>
-                                <div class="bar" style="--height: 70%"><span>Fri</span></div>
-                                <div class="bar active" style="--height: 95%"><span>Sat</span></div>
-                                <div class="bar" style="--height: 60%"><span>Sun</span></div>
+                            <div class="chart-bars" id="animatedBars">
+                                <div class="bar" data-height="45"><span>Mon</span></div>
+                                <div class="bar" data-height="65"><span>Tue</span></div>
+                                <div class="bar" data-height="50"><span>Wed</span></div>
+                                <div class="bar" data-height="80"><span>Thu</span></div>
+                                <div class="bar" data-height="70"><span>Fri</span></div>
+                                <div class="bar active" data-height="95"><span>Sat</span></div>
+                                <div class="bar" data-height="60"><span>Sun</span></div>
                             </div>
                         </div>
                         <div class="mini-stats-row">
                             <div class="mini-stat">
                                 <span class="ms-label">Sent</span>
-                                <span class="ms-value">124,589</span>
+                                <span class="ms-value" data-count-up="124589">0</span>
                             </div>
                             <div class="mini-stat">
                                 <span class="ms-label">Opened</span>
-                                <span class="ms-value">58,432</span>
+                                <span class="ms-value" data-count-up="58432">0</span>
                             </div>
                             <div class="mini-stat">
                                 <span class="ms-label">Clicked</span>
-                                <span class="ms-value">12,847</span>
+                                <span class="ms-value" data-count-up="12847">0</span>
                             </div>
                         </div>
-                        <div class="mini-email-preview">
-                            <div class="email-line subject"></div>
-                            <div class="email-line body long"></div>
-                            <div class="email-line body"></div>
-                            <div class="email-line cta"></div>
+                        <div class="live-feed">
+                            <div class="live-dot"></div>
+                            <span class="live-text">Live Activity Feed</span>
                         </div>
+                        <div class="feed-items" id="liveFeed"></div>
                     </div>
                 </div>
                 <div class="floating-card card-1">
@@ -182,57 +186,97 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-tag">How It Works</span>
+                <h2 class="section-title">Live in <span class="gradient-text">3 Minutes</span></h2>
+                <p class="section-subtitle">From sign-up to your first campaign — faster than making coffee.</p>
+            </div>
+            <div class="steps-timeline">
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📝</div>
+                    <h3>Import Your List</h3>
+                    <p>Upload a CSV, connect your store, or paste emails. We auto-clean, deduplicate, and validate every address.</p>
+                </div>
+                <div class="step-connector"><div class="connector-line"></div></div>
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">🎨</div>
+                    <h3>Design Your Email</h3>
+                    <p>Pick a template or let AI generate one. Drag-and-drop editor with live preview — zero code needed.</p>
+                </div>
+                <div class="step-connector"><div class="connector-line"></div></div>
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🤖</div>
+                    <h3>AI Optimizes & Sends</h3>
+                    <p>AI picks the best subject line, optimal send time per subscriber, and personalizes content. Hit send — or schedule it.</p>
+                </div>
+                <div class="step-connector"><div class="connector-line"></div></div>
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">📈</div>
+                    <h3>Watch Revenue Grow</h3>
+                    <p>Real-time dashboards show opens, clicks, conversions, and revenue attribution. See exactly how much each email earns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
     <section class="section features" id="features">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Features</span>
                 <h2 class="section-title">Every Tool You Need.<br><span class="gradient-text">Nothing You Don't.</span></h2>
                 <p class="section-subtitle">Built from the ground up to outperform Mailchimp, ConvertKit, and ActiveCampaign on every metric that matters.</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card featured" data-aos="fade-up">
+                <div class="feature-card featured animate-on-scroll">
                     <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
                     <h3>AI Campaign Builder</h3>
-                    <p>Generate entire campaigns from a single prompt. Our AI writes subject lines, body copy, and CTAs trained on 2B+ high-converting emails.</p>
+                    <p>Generate entire campaigns from a single prompt. Our AI writes subject lines, body copy, and CTAs — trained on 2B+ high-converting emails.</p>
                     <div class="feature-metrics">
                         <span class="metric"><strong>94%</strong> subject line accuracy</span>
                         <span class="metric"><strong>3.2x</strong> faster creation</span>
                     </div>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="50">
+                <div class="feature-card animate-on-scroll">
                     <div class="feature-icon purple">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
                     </div>
                     <h3>Hyper-Segmentation</h3>
                     <p>Go beyond basic tags. Segment by behavior, purchase history, engagement score, predicted LTV, and 200+ custom attributes.</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card animate-on-scroll">
                     <div class="feature-icon teal">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
                     </div>
                     <h3>Predictive Analytics</h3>
                     <p>Know who'll buy before they do. ML models predict conversions, churn risk, and optimal send windows per subscriber.</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="feature-card animate-on-scroll">
                     <div class="feature-icon orange">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
                     </div>
                     <h3>Dynamic Content</h3>
-                    <p>One email, infinite versions. Personalize images, copy, offers, and layouts per recipient in real-time at send.</p>
+                    <p>One email, infinite versions. Personalize images, copy, offers, and layouts per recipient — in real-time at send.</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card animate-on-scroll">
                     <div class="feature-icon pink">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
                     </div>
                     <h3>Smart A/B/n Testing</h3>
                     <p>Test up to 8 variants simultaneously. AI auto-allocates traffic to winners using multi-armed bandit algorithms.</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+                <div class="feature-card animate-on-scroll">
                     <div class="feature-icon red">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
                     </div>
                     <h3>SMS + Push + Email</h3>
                     <p>Unified inbox, unified campaigns. Reach subscribers on their preferred channel with intelligent fallback routing.</p>
@@ -241,167 +285,113 @@
         </div>
     </section>
 
-    <!-- Automation Section -->
+    <!-- ===== AUTOMATION ===== -->
     <section class="section automation-section" id="automation">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Automation</span>
                 <h2 class="section-title">Set It. Forget It.<br><span class="gradient-text">Watch Revenue Grow.</span></h2>
                 <p class="section-subtitle">Visual workflow builder with 50+ pre-built automation recipes that activate in one click.</p>
             </div>
-            <div class="automation-builder" data-aos="fade-up">
+            <div class="automation-builder animate-on-scroll">
                 <div class="builder-sidebar">
                     <h4>Workflow Library</h4>
                     <div class="workflow-list">
                         <div class="workflow-item active" data-workflow="welcome">
                             <div class="wi-icon">👋</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Welcome Series</span>
-                                <span class="wi-desc">5-email onboarding flow</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Welcome Series</span><span class="wi-desc">5-email onboarding flow</span></div>
                         </div>
                         <div class="workflow-item" data-workflow="abandon">
                             <div class="wi-icon">🛒</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Cart Abandonment</span>
-                                <span class="wi-desc">3-step recovery</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Cart Abandonment</span><span class="wi-desc">3-step recovery</span></div>
                         </div>
                         <div class="workflow-item" data-workflow="winback">
                             <div class="wi-icon">💎</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Win-Back Campaign</span>
-                                <span class="wi-desc">Re-engage dormant users</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Win-Back Campaign</span><span class="wi-desc">Re-engage dormant users</span></div>
                         </div>
                         <div class="workflow-item" data-workflow="birthday">
                             <div class="wi-icon">🎂</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Birthday / Anniversary</span>
-                                <span class="wi-desc">Personalized offers</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Birthday / Anniversary</span><span class="wi-desc">Personalized offers</span></div>
                         </div>
                         <div class="workflow-item" data-workflow="upsell">
                             <div class="wi-icon">📈</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Post-Purchase Upsell</span>
-                                <span class="wi-desc">Cross-sell recommendations</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Post-Purchase Upsell</span><span class="wi-desc">Cross-sell recommendations</span></div>
                         </div>
                         <div class="workflow-item" data-workflow="leadscoring">
                             <div class="wi-icon">🎯</div>
-                            <div class="wi-info">
-                                <span class="wi-name">Lead Scoring</span>
-                                <span class="wi-desc">Qualify & route leads</span>
-                            </div>
+                            <div class="wi-info"><span class="wi-name">Lead Scoring</span><span class="wi-desc">Qualify & route leads</span></div>
                         </div>
                     </div>
                 </div>
                 <div class="builder-canvas">
-                    <div class="workflow-visual" id="workflowCanvas">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="workflow-visual" id="workflowCanvas"></div>
                 </div>
                 <div class="builder-stats">
                     <h4>Automation Impact</h4>
                     <div class="auto-stat">
                         <div class="as-bar"><div class="as-fill" style="--width: 89%"></div></div>
-                        <div class="as-info">
-                            <span>Open Rate</span><span class="as-val">89%</span>
-                        </div>
+                        <div class="as-info"><span>Open Rate</span><span class="as-val">89%</span></div>
                     </div>
                     <div class="auto-stat">
                         <div class="as-bar"><div class="as-fill purple" style="--width: 34%"></div></div>
-                        <div class="as-info">
-                            <span>Click Rate</span><span class="as-val">34%</span>
-                        </div>
+                        <div class="as-info"><span>Click Rate</span><span class="as-val">34%</span></div>
                     </div>
                     <div class="auto-stat">
                         <div class="as-bar"><div class="as-fill teal" style="--width: 12%"></div></div>
-                        <div class="as-info">
-                            <span>Conversion</span><span class="as-val">12.4%</span>
-                        </div>
+                        <div class="as-info"><span>Conversion</span><span class="as-val">12.4%</span></div>
                     </div>
                     <div class="auto-stat">
                         <div class="as-bar"><div class="as-fill orange" style="--width: 67%"></div></div>
-                        <div class="as-info">
-                            <span>Revenue/Email</span><span class="as-val">$2.47</span>
-                        </div>
+                        <div class="as-info"><span>Revenue/Email</span><span class="as-val">$2.47</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Email Builder / Templates Section -->
+    <!-- ===== TEMPLATES ===== -->
     <section class="section templates-section" id="templates">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Templates</span>
                 <h2 class="section-title">Drag. Drop. <span class="gradient-text">Deploy.</span></h2>
                 <p class="section-subtitle">500+ responsive templates. Pixel-perfect drag-and-drop builder. Or let AI design it for you.</p>
             </div>
-            <div class="template-showcase" data-aos="fade-up">
+            <div class="template-showcase animate-on-scroll">
                 <div class="template-tabs">
-                    <button class="tab-btn active" data-tab="ecommerce">E-Commerce</button>
-                    <button class="tab-btn" data-tab="saas">SaaS</button>
-                    <button class="tab-btn" data-tab="newsletter">Newsletter</button>
-                    <button class="tab-btn" data-tab="transactional">Transactional</button>
-                    <button class="tab-btn" data-tab="events">Events</button>
+                    <button class="tab-btn active" data-tab="ecommerce">🛒 E-Commerce</button>
+                    <button class="tab-btn" data-tab="saas">💻 SaaS</button>
+                    <button class="tab-btn" data-tab="newsletter">📰 Newsletter</button>
+                    <button class="tab-btn" data-tab="transactional">📋 Transactional</button>
+                    <button class="tab-btn" data-tab="events">🎪 Events</button>
                 </div>
-                <div class="template-grid" id="templateGrid">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="template-grid" id="templateGrid"></div>
             </div>
-            <div class="builder-demo" data-aos="fade-up">
+            <div class="builder-demo animate-on-scroll">
                 <div class="demo-window">
                     <div class="demo-header">
-                        <div class="preview-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
+                        <div class="preview-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
                         <div class="demo-tabs">
-                            <span class="demo-tab active">Visual Editor</span>
-                            <span class="demo-tab">HTML</span>
-                            <span class="demo-tab">Preview</span>
+                            <span class="demo-tab active" data-demo-tab="visual">Visual Editor</span>
+                            <span class="demo-tab" data-demo-tab="html">HTML</span>
+                            <span class="demo-tab" data-demo-tab="preview">Preview</span>
                         </div>
                     </div>
                     <div class="demo-body">
                         <div class="demo-sidebar">
-                            <div class="demo-block" draggable="true">
-                                <span>📝</span> Text
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>🖼️</span> Image
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>🔘</span> Button
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>📊</span> Columns
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>🎨</span> Hero
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>📦</span> Product
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>⏱️</span> Timer
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>📱</span> Social
-                            </div>
-                            <div class="demo-block" draggable="true">
-                                <span>🤖</span> AI Block
-                            </div>
+                            <div class="demo-block" draggable="true" data-block="text"><span>📝</span> Text</div>
+                            <div class="demo-block" draggable="true" data-block="image"><span>🖼️</span> Image</div>
+                            <div class="demo-block" draggable="true" data-block="button"><span>🔘</span> Button</div>
+                            <div class="demo-block" draggable="true" data-block="columns"><span>📊</span> Columns</div>
+                            <div class="demo-block" draggable="true" data-block="hero"><span>🎨</span> Hero</div>
+                            <div class="demo-block" draggable="true" data-block="product"><span>📦</span> Product</div>
+                            <div class="demo-block" draggable="true" data-block="timer"><span>⏱️</span> Timer</div>
+                            <div class="demo-block" draggable="true" data-block="social"><span>📱</span> Social</div>
+                            <div class="demo-block" draggable="true" data-block="ai"><span>🤖</span> AI Block</div>
                         </div>
-                        <div class="demo-canvas">
-                            <div class="email-builder-preview">
-                                <div class="ebp-header">
-                                    <div class="ebp-logo"></div>
-                                </div>
+                        <div class="demo-canvas" id="demoCanvas">
+                            <div class="email-builder-preview" id="emailPreview">
+                                <div class="ebp-header"><div class="ebp-logo"></div></div>
                                 <div class="ebp-hero">
                                     <div class="ebp-hero-img"></div>
                                     <h3>Summer Collection is Here 🌊</h3>
@@ -409,28 +399,17 @@
                                     <button class="ebp-cta">Shop Now</button>
                                 </div>
                                 <div class="ebp-products">
-                                    <div class="ebp-product">
-                                        <div class="ebp-product-img"></div>
-                                        <span class="ebp-product-name">Premium Tee</span>
-                                        <span class="ebp-product-price">$49</span>
-                                    </div>
-                                    <div class="ebp-product">
-                                        <div class="ebp-product-img"></div>
-                                        <span class="ebp-product-name">Linen Shorts</span>
-                                        <span class="ebp-product-price">$65</span>
-                                    </div>
-                                    <div class="ebp-product">
-                                        <div class="ebp-product-img"></div>
-                                        <span class="ebp-product-name">Beach Hat</span>
-                                        <span class="ebp-product-price">$35</span>
-                                    </div>
+                                    <div class="ebp-product"><div class="ebp-product-img"></div><span class="ebp-product-name">Premium Tee</span><span class="ebp-product-price">$49</span></div>
+                                    <div class="ebp-product"><div class="ebp-product-img"></div><span class="ebp-product-name">Linen Shorts</span><span class="ebp-product-price">$65</span></div>
+                                    <div class="ebp-product"><div class="ebp-product-img"></div><span class="ebp-product-name">Beach Hat</span><span class="ebp-product-price">$35</span></div>
                                 </div>
                                 <div class="ebp-footer">
-                                    <div class="ebp-social">
-                                        <span>📘</span><span>🐦</span><span>📸</span>
-                                    </div>
+                                    <div class="ebp-social"><span>📘</span><span>🐦</span><span>📸</span></div>
                                     <p>Unsubscribe · Preferences · View in browser</p>
                                 </div>
+                            </div>
+                            <div class="drop-zone" id="dropZone">
+                                <p>⬇️ Drag blocks here to add to email</p>
                             </div>
                         </div>
                     </div>
@@ -439,144 +418,91 @@
         </div>
     </section>
 
-    <!-- Advanced Strategy Section -->
+    <!-- ===== STRATEGY ===== -->
     <section class="section strategy-section" id="strategy">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Advanced Strategy</span>
                 <h2 class="section-title">Strategies That <span class="gradient-text">Outperform</span></h2>
                 <p class="section-subtitle">Built-in advanced methodologies that turn email from a cost center into your highest-ROI channel.</p>
             </div>
             <div class="strategy-grid">
-                <div class="strategy-card" data-aos="fade-up">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">01</div>
                     <h3>Predictive Send-Time Optimization</h3>
-                    <p>ML analyzes each subscriber's open patterns to find their optimal engagement window — down to the minute. No more guessing "Tuesday at 10am."</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>41%</strong> higher open rates vs. batch send</span>
-                    </div>
+                    <p>ML analyzes each subscriber's open patterns to find their optimal engagement window — down to the minute.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>41%</strong> higher open rates vs. batch send</span></div>
                 </div>
-                <div class="strategy-card" data-aos="fade-up" data-aos-delay="50">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">02</div>
                     <h3>Behavioral Trigger Cascades</h3>
-                    <p>Chain triggers across channels: email open → SMS follow-up → push notification → retargeting ad. One subscriber action cascades into a multi-touch journey.</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>67%</strong> more touchpoints per journey</span>
-                    </div>
+                    <p>Chain triggers across channels: email open → SMS → push → retargeting ad. One action cascades into a multi-touch journey.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>67%</strong> more touchpoints per journey</span></div>
                 </div>
-                <div class="strategy-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">03</div>
-                    <h3>Engagement Scoring & Sunset Flows</h3>
-                    <p>Automatically score engagement health. Warm up cold subscribers with win-back sequences. Sunset truly dead contacts to protect deliverability.</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>23%</strong> improvement in sender reputation</span>
-                    </div>
+                    <h3>Engagement Scoring & Sunset</h3>
+                    <p>Auto-score engagement health. Warm up cold subscribers with win-back sequences. Sunset dead contacts to protect deliverability.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>23%</strong> improvement in sender reputation</span></div>
                 </div>
-                <div class="strategy-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">04</div>
-                    <h3>Revenue Attribution & Cohort Analysis</h3>
-                    <p>Multi-touch revenue attribution down to the individual email. Track cohort performance, LTV impact, and true incrementality — not just last-click.</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>3.8x</strong> more accurate ROI measurement</span>
-                    </div>
+                    <h3>Revenue Attribution</h3>
+                    <p>Multi-touch revenue attribution down to the individual email. Track cohort performance, LTV impact, and true incrementality.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>3.8x</strong> more accurate ROI measurement</span></div>
                 </div>
-                <div class="strategy-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">05</div>
                     <h3>AI Content Personalization</h3>
-                    <p>Each subscriber sees a uniquely generated email. AI rewrites subject lines, adjusts tone, swaps product recommendations, and adapts CTAs per recipient.</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>156%</strong> increase in click-through rate</span>
-                    </div>
+                    <p>Each subscriber sees a uniquely generated email. AI rewrites subject lines, adjusts tone, and adapts CTAs per recipient.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>156%</strong> increase in click-through rate</span></div>
                 </div>
-                <div class="strategy-card" data-aos="fade-up" data-aos-delay="250">
+                <div class="strategy-card animate-on-scroll">
                     <div class="sc-number">06</div>
                     <h3>Deliverability Fortress</h3>
-                    <p>Automatic IP warming, DMARC/SPF/DKIM management, blocklist monitoring, inbox placement testing, and AI spam-score checking before every send.</p>
-                    <div class="sc-result">
-                        <span class="sc-arrow">↑</span>
-                        <span><strong>99.7%</strong> inbox placement rate</span>
-                    </div>
+                    <p>Auto IP warming, DMARC/SPF/DKIM management, blocklist monitoring, and AI spam-score checking before every send.</p>
+                    <div class="sc-result"><span class="sc-arrow">↑</span><span><strong>99.7%</strong> inbox placement rate</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Analytics Section -->
+    <!-- ===== ANALYTICS ===== -->
     <section class="section analytics-section" id="analytics">
         <div class="container">
             <div class="split-layout">
-                <div class="split-content" data-aos="fade-right">
+                <div class="split-content animate-on-scroll">
                     <span class="section-tag">Analytics</span>
                     <h2 class="section-title">Real-Time Intelligence.<br><span class="gradient-text">Not Just Reports.</span></h2>
-                    <p>Live dashboards that go beyond opens and clicks. Track revenue per email, subscriber lifetime value, engagement decay, content heatmaps, and predictive churn scores — all in one place.</p>
+                    <p>Live dashboards that go beyond opens and clicks. Track revenue per email, subscriber lifetime value, engagement decay, and predictive churn scores.</p>
                     <div class="analytics-features">
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Real-time campaign monitoring</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Revenue attribution per email</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Click heatmaps & scroll tracking</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Subscriber health scoring</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Predictive churn alerts</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Cohort & funnel analysis</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Competitor benchmarking</span>
-                        </div>
-                        <div class="af-item">
-                            <div class="af-check">✓</div>
-                            <span>Custom report builder</span>
-                        </div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Real-time campaign monitoring</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Revenue attribution per email</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Click heatmaps & scroll tracking</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Subscriber health scoring</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Predictive churn alerts</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Cohort & funnel analysis</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Competitor benchmarking</span></div>
+                        <div class="af-item"><div class="af-check">✓</div><span>Custom report builder</span></div>
                     </div>
                 </div>
-                <div class="split-visual" data-aos="fade-left">
+                <div class="split-visual animate-on-scroll">
                     <div class="analytics-dashboard">
                         <div class="ad-row">
-                            <div class="ad-card">
-                                <span class="ad-label">Revenue Today</span>
-                                <span class="ad-value">$12,847</span>
-                                <span class="ad-change up">+18.3%</span>
-                            </div>
-                            <div class="ad-card">
-                                <span class="ad-label">Active Subscribers</span>
-                                <span class="ad-value">284,501</span>
-                                <span class="ad-change up">+2.1%</span>
-                            </div>
+                            <div class="ad-card"><span class="ad-label">Revenue Today</span><span class="ad-value">$12,847</span><span class="ad-change up">+18.3%</span></div>
+                            <div class="ad-card"><span class="ad-label">Active Subscribers</span><span class="ad-value">284,501</span><span class="ad-change up">+2.1%</span></div>
                         </div>
                         <div class="ad-chart">
                             <div class="chart-title">Revenue Attribution</div>
                             <div class="donut-chart">
                                 <svg viewBox="0 0 120 120">
                                     <circle cx="60" cy="60" r="50" fill="none" stroke="#1e1e2e" stroke-width="20"/>
-                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#6366F1" stroke-width="20" stroke-dasharray="125 189" stroke-dashoffset="0" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#6366F1" stroke-width="20" stroke-dasharray="125 189" class="donut-segment"/>
                                     <circle cx="60" cy="60" r="50" fill="none" stroke="#8B5CF6" stroke-width="20" stroke-dasharray="75 239" stroke-dashoffset="-125" class="donut-segment"/>
                                     <circle cx="60" cy="60" r="50" fill="none" stroke="#06B6D4" stroke-width="20" stroke-dasharray="50 264" stroke-dashoffset="-200" class="donut-segment"/>
                                     <circle cx="60" cy="60" r="50" fill="none" stroke="#F59E0B" stroke-width="20" stroke-dasharray="64 250" stroke-dashoffset="-250" class="donut-segment"/>
                                 </svg>
-                                <div class="donut-center">
-                                    <span class="dc-value">$48.2K</span>
-                                    <span class="dc-label">This Month</span>
-                                </div>
+                                <div class="donut-center"><span class="dc-value">$48.2K</span><span class="dc-label">This Month</span></div>
                             </div>
                             <div class="donut-legend">
                                 <span><i style="background:#6366F1"></i> Welcome Series (40%)</span>
@@ -587,12 +513,8 @@
                         </div>
                         <div class="ad-heatmap">
                             <div class="chart-title">Engagement Heatmap</div>
-                            <div class="heatmap-grid">
-                                <!-- Generated by JS -->
-                            </div>
-                            <div class="heatmap-labels">
-                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                            </div>
+                            <div class="heatmap-grid" id="heatmapGrid"></div>
+                            <div class="heatmap-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
                         </div>
                     </div>
                 </div>
@@ -600,182 +522,130 @@
         </div>
     </section>
 
-    <!-- Deliverability Section -->
+    <!-- ===== DELIVERABILITY ===== -->
     <section class="section deliverability-section">
         <div class="container">
-            <div class="deliverability-card" data-aos="fade-up">
+            <div class="deliverability-card animate-on-scroll">
                 <div class="dc-content">
                     <span class="section-tag light">Deliverability</span>
                     <h2>99.7% Inbox Placement.<br>Not Spam Folder.</h2>
-                    <p>Dedicated IPs, automatic warming, real-time blocklist monitoring, DMARC/SPF/DKIM wizards, and AI spam detection that catches issues before you hit send.</p>
+                    <p>Dedicated IPs, automatic warming, real-time blocklist monitoring, DMARC/SPF/DKIM wizards, and AI spam detection before every send.</p>
                     <div class="dc-metrics">
-                        <div class="dc-metric">
-                            <span class="dcm-value">99.7%</span>
-                            <span class="dcm-label">Inbox Rate</span>
-                        </div>
-                        <div class="dc-metric">
-                            <span class="dcm-value">&lt;0.1%</span>
-                            <span class="dcm-label">Spam Rate</span>
-                        </div>
-                        <div class="dc-metric">
-                            <span class="dcm-value">&lt;0.01%</span>
-                            <span class="dcm-label">Bounce Rate</span>
-                        </div>
+                        <div class="dc-metric"><span class="dcm-value">99.7%</span><span class="dcm-label">Inbox Rate</span></div>
+                        <div class="dc-metric"><span class="dcm-value">&lt;0.1%</span><span class="dcm-label">Spam Rate</span></div>
+                        <div class="dc-metric"><span class="dcm-value">&lt;0.01%</span><span class="dcm-label">Bounce Rate</span></div>
                     </div>
                 </div>
                 <div class="dc-visual">
                     <div class="inbox-animation">
                         <div class="inbox-icon">📬</div>
-                        <div class="inbox-rays">
-                            <span></span><span></span><span></span><span></span><span></span><span></span>
-                        </div>
+                        <div class="inbox-rays"><span></span><span></span><span></span><span></span><span></span><span></span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Integrations Section -->
+    <!-- ===== INTEGRATIONS ===== -->
     <section class="section integrations-section" id="integrations">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Integrations</span>
                 <h2 class="section-title">Connects to <span class="gradient-text">Everything</span></h2>
                 <p class="section-subtitle">300+ native integrations. Plus webhooks and API for anything custom.</p>
             </div>
-            <div class="integrations-orbit" data-aos="fade-up">
-                <div class="orbit-center">
-                    <div class="orbit-logo">
-                        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
-                            <rect width="32" height="32" rx="8" fill="url(#logo-gradient2)"/>
-                            <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            <defs><linearGradient id="logo-gradient2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
-                        </svg>
-                    </div>
-                </div>
-                <div class="orbit-ring ring-1">
-                    <div class="orbit-item" style="--angle: 0deg">Shopify</div>
-                    <div class="orbit-item" style="--angle: 60deg">WooCommerce</div>
-                    <div class="orbit-item" style="--angle: 120deg">Stripe</div>
-                    <div class="orbit-item" style="--angle: 180deg">Zapier</div>
-                    <div class="orbit-item" style="--angle: 240deg">Salesforce</div>
-                    <div class="orbit-item" style="--angle: 300deg">HubSpot</div>
-                </div>
-                <div class="orbit-ring ring-2">
-                    <div class="orbit-item" style="--angle: 30deg">WordPress</div>
-                    <div class="orbit-item" style="--angle: 90deg">Slack</div>
-                    <div class="orbit-item" style="--angle: 150deg">Segment</div>
-                    <div class="orbit-item" style="--angle: 210deg">BigCommerce</div>
-                    <div class="orbit-item" style="--angle: 270deg">Webflow</div>
-                    <div class="orbit-item" style="--angle: 330deg">GA4</div>
-                </div>
-            </div>
-            <div class="integration-categories" data-aos="fade-up">
-                <div class="ic-card">
-                    <h4>🛒 E-Commerce</h4>
-                    <p>Shopify, WooCommerce, BigCommerce, Magento, Squarespace</p>
-                </div>
-                <div class="ic-card">
-                    <h4>📊 Analytics</h4>
-                    <p>Google Analytics, Mixpanel, Amplitude, Segment, Heap</p>
-                </div>
-                <div class="ic-card">
-                    <h4>🔧 CRM</h4>
-                    <p>Salesforce, HubSpot, Pipedrive, Zoho, Monday</p>
-                </div>
-                <div class="ic-card">
-                    <h4>⚡ Automation</h4>
-                    <p>Zapier, Make, n8n, Tray.io, Workato</p>
-                </div>
+            <div class="integration-grid animate-on-scroll">
+                <div class="int-card"><div class="int-icon">🛒</div><h4>Shopify</h4><span>E-Commerce</span></div>
+                <div class="int-card"><div class="int-icon">💳</div><h4>Stripe</h4><span>Payments</span></div>
+                <div class="int-card"><div class="int-icon">📊</div><h4>Google Analytics</h4><span>Analytics</span></div>
+                <div class="int-card"><div class="int-icon">⚡</div><h4>Zapier</h4><span>Automation</span></div>
+                <div class="int-card"><div class="int-icon">🔧</div><h4>Salesforce</h4><span>CRM</span></div>
+                <div class="int-card"><div class="int-icon">💬</div><h4>Slack</h4><span>Messaging</span></div>
+                <div class="int-card"><div class="int-icon">🌐</div><h4>WordPress</h4><span>CMS</span></div>
+                <div class="int-card"><div class="int-icon">📈</div><h4>HubSpot</h4><span>Marketing</span></div>
+                <div class="int-card"><div class="int-icon">🔗</div><h4>Segment</h4><span>Data</span></div>
+                <div class="int-card"><div class="int-icon">🏪</div><h4>WooCommerce</h4><span>E-Commerce</span></div>
+                <div class="int-card"><div class="int-icon">📱</div><h4>Webflow</h4><span>Website</span></div>
+                <div class="int-card"><div class="int-icon">➕</div><h4>300+ More</h4><span>View All</span></div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Section -->
+    <!-- ===== PRICING ===== -->
     <section class="section pricing-section" id="pricing">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Pricing</span>
                 <h2 class="section-title">Simple, Honest <span class="gradient-text">Pricing</span></h2>
                 <p class="section-subtitle">No hidden fees. No per-email charges. Scale without surprises.</p>
             </div>
-            <div class="pricing-toggle" data-aos="fade-up">
-                <span class="toggle-label active">Monthly</span>
+            <div class="pricing-toggle animate-on-scroll">
+                <span class="toggle-label active" id="monthlyLabel">Monthly</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="pricingToggle">
                     <span class="toggle-slider"></span>
                 </label>
-                <span class="toggle-label">Annual <span class="save-badge">Save 25%</span></span>
+                <span class="toggle-label" id="annualLabel">Annual <span class="save-badge">Save 25%</span></span>
             </div>
-            <div class="pricing-grid" data-aos="fade-up">
+            <div class="pricing-grid animate-on-scroll">
                 <div class="pricing-card">
-                    <div class="pc-header">
-                        <h3>Starter</h3>
-                        <p>For growing businesses</p>
-                    </div>
+                    <div class="pc-header"><h3>Starter</h3><p>For growing businesses</p></div>
                     <div class="pc-price">
                         <span class="price-amount monthly">$29</span>
-                        <span class="price-amount annual" style="display:none">$22</span>
+                        <span class="price-amount annual hidden">$22</span>
                         <span class="price-period">/month</span>
                     </div>
                     <div class="pc-features">
-                        <div class="pcf">✓ Up to 5,000 subscribers</div>
-                        <div class="pcf">✓ Unlimited emails</div>
-                        <div class="pcf">✓ Drag & drop builder</div>
-                        <div class="pcf">✓ 50+ templates</div>
-                        <div class="pcf">✓ Basic automation (5 workflows)</div>
-                        <div class="pcf">✓ A/B testing</div>
-                        <div class="pcf">✓ Email support</div>
-                        <div class="pcf dim">✗ AI campaign builder</div>
-                        <div class="pcf dim">✗ Predictive send time</div>
+                        <div class="pcf included">✓ Up to 5,000 subscribers</div>
+                        <div class="pcf included">✓ Unlimited emails</div>
+                        <div class="pcf included">✓ Drag & drop builder</div>
+                        <div class="pcf included">✓ 50+ templates</div>
+                        <div class="pcf included">✓ Basic automation (5 workflows)</div>
+                        <div class="pcf included">✓ A/B testing</div>
+                        <div class="pcf included">✓ Email support</div>
+                        <div class="pcf excluded">✗ AI campaign builder</div>
+                        <div class="pcf excluded">✗ Predictive send time</div>
                     </div>
                     <button class="btn-outline btn-block" onclick="openModal('signupModal')">Start Free Trial</button>
                 </div>
                 <div class="pricing-card popular">
                     <div class="popular-badge">Most Popular</div>
-                    <div class="pc-header">
-                        <h3>Growth</h3>
-                        <p>For scaling teams</p>
-                    </div>
+                    <div class="pc-header"><h3>Growth</h3><p>For scaling teams</p></div>
                     <div class="pc-price">
                         <span class="price-amount monthly">$79</span>
-                        <span class="price-amount annual" style="display:none">$59</span>
+                        <span class="price-amount annual hidden">$59</span>
                         <span class="price-period">/month</span>
                     </div>
                     <div class="pc-features">
-                        <div class="pcf">✓ Up to 25,000 subscribers</div>
-                        <div class="pcf">✓ Unlimited emails</div>
-                        <div class="pcf">✓ AI campaign builder</div>
-                        <div class="pcf">✓ 500+ templates</div>
-                        <div class="pcf">✓ Unlimited automation</div>
-                        <div class="pcf">✓ Smart A/B/n testing</div>
-                        <div class="pcf">✓ Predictive send time</div>
-                        <div class="pcf">✓ SMS + Push channels</div>
-                        <div class="pcf">✓ Priority support</div>
+                        <div class="pcf included">✓ Up to 25,000 subscribers</div>
+                        <div class="pcf included">✓ Unlimited emails</div>
+                        <div class="pcf included">✓ AI campaign builder</div>
+                        <div class="pcf included">✓ 500+ templates</div>
+                        <div class="pcf included">✓ Unlimited automation</div>
+                        <div class="pcf included">✓ Smart A/B/n testing</div>
+                        <div class="pcf included">✓ Predictive send time</div>
+                        <div class="pcf included">✓ SMS + Push channels</div>
+                        <div class="pcf included">✓ Priority support</div>
                     </div>
                     <button class="btn-primary btn-block" onclick="openModal('signupModal')">Start Free Trial</button>
                 </div>
                 <div class="pricing-card">
-                    <div class="pc-header">
-                        <h3>Enterprise</h3>
-                        <p>For high-volume senders</p>
-                    </div>
+                    <div class="pc-header"><h3>Enterprise</h3><p>For high-volume senders</p></div>
                     <div class="pc-price">
                         <span class="price-amount monthly">$249</span>
-                        <span class="price-amount annual" style="display:none">$187</span>
+                        <span class="price-amount annual hidden">$187</span>
                         <span class="price-period">/month</span>
                     </div>
                     <div class="pc-features">
-                        <div class="pcf">✓ Unlimited subscribers</div>
-                        <div class="pcf">✓ Unlimited everything</div>
-                        <div class="pcf">✓ Dedicated IP addresses</div>
-                        <div class="pcf">✓ Custom AI model training</div>
-                        <div class="pcf">✓ Revenue attribution</div>
-                        <div class="pcf">✓ Custom integrations</div>
-                        <div class="pcf">✓ SLA guarantee</div>
-                        <div class="pcf">✓ Dedicated account manager</div>
-                        <div class="pcf">✓ SSO & advanced security</div>
+                        <div class="pcf included">✓ Unlimited subscribers</div>
+                        <div class="pcf included">✓ Unlimited everything</div>
+                        <div class="pcf included">✓ Dedicated IP addresses</div>
+                        <div class="pcf included">✓ Custom AI model training</div>
+                        <div class="pcf included">✓ Revenue attribution</div>
+                        <div class="pcf included">✓ Custom integrations</div>
+                        <div class="pcf included">✓ SLA guarantee</div>
+                        <div class="pcf included">✓ Dedicated account manager</div>
+                        <div class="pcf included">✓ SSO & advanced security</div>
                     </div>
                     <button class="btn-outline btn-block" onclick="openModal('signupModal')">Contact Sales</button>
                 </div>
@@ -783,55 +653,100 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- ===== FAQ ===== -->
+    <section class="section faq-section" id="faq">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Got <span class="gradient-text">Questions?</span></h2>
+            </div>
+            <div class="faq-list animate-on-scroll">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is there really a free trial?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>Yes — 14 days, all features, no credit card required. If you don't upgrade, your account simply pauses. No charges, no tricks.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How does MailForge compare to Mailchimp?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>Higher deliverability (99.7% vs ~96%), AI-powered everything (subject lines, send times, content), real revenue attribution, and pricing that doesn't punish you for growing. Most users see 40%+ improvement in open rates within the first month.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I import my existing subscribers?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>Absolutely. Upload a CSV, connect directly to Mailchimp/ConvertKit/ActiveCampaign for one-click migration, or use our API. We auto-clean and validate every address during import.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What's the deliverability rate?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>99.7% inbox placement rate across all plans. We manage dedicated IPs, automatic warming, DMARC/SPF/DKIM, blocklist monitoring, and run AI spam checks before every send.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Do you support SMS and push notifications?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>Yes — Growth and Enterprise plans include SMS, push notifications, and email in a unified campaign builder. Create multi-channel automations with intelligent channel fallback.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is my data safe? Are you GDPR compliant?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="faq-answer"><p>SOC 2 Type II certified, fully GDPR compliant, and we offer data processing agreements. Your data is encrypted at rest and in transit. We never sell subscriber data — ever.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
     <section class="section testimonials-section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header animate-on-scroll">
                 <span class="section-tag">Testimonials</span>
                 <h2 class="section-title">Loved by <span class="gradient-text">Marketers</span></h2>
             </div>
-            <div class="testimonials-grid" data-aos="fade-up">
+            <div class="testimonials-grid animate-on-scroll">
                 <div class="testimonial-card">
                     <div class="tc-stars">★★★★★</div>
                     <p>"Switched from Mailchimp and saw a 47% increase in open rates within the first month. The AI subject line generator is genuinely magical."</p>
                     <div class="tc-author">
                         <div class="tc-avatar" style="background: linear-gradient(135deg, #6366F1, #8B5CF6)">SK</div>
-                        <div class="tc-info">
-                            <span class="tc-name">Sarah Kim</span>
-                            <span class="tc-role">Head of Growth, Luminary</span>
-                        </div>
+                        <div class="tc-info"><span class="tc-name">Sarah Kim</span><span class="tc-role">Head of Growth, Luminary</span></div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="tc-stars">★★★★★</div>
-                    <p>"The behavioral automation alone paid for itself in week one. Cart abandonment recovery went from 8% to 31%. Not even exaggerating."</p>
+                    <p>"Cart abandonment recovery went from 8% to 31%. The behavioral automation alone paid for itself in week one. Not even exaggerating."</p>
                     <div class="tc-author">
                         <div class="tc-avatar" style="background: linear-gradient(135deg, #06B6D4, #0EA5E9)">MR</div>
-                        <div class="tc-info">
-                            <span class="tc-name">Marcus Rivera</span>
-                            <span class="tc-role">E-Commerce Director, Threads & Co</span>
-                        </div>
+                        <div class="tc-info"><span class="tc-name">Marcus Rivera</span><span class="tc-role">E-Commerce Director, Threads & Co</span></div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="tc-stars">★★★★★</div>
-                    <p>"Finally, analytics that make sense. The revenue attribution changed how our entire team thinks about email. It's not a cost center anymore — it's our #1 channel."</p>
+                    <p>"Revenue attribution changed everything. Email is now our #1 channel — not a cost center. The analytics dashboard is addictive."</p>
                     <div class="tc-author">
                         <div class="tc-avatar" style="background: linear-gradient(135deg, #F59E0B, #EF4444)">JP</div>
-                        <div class="tc-info">
-                            <span class="tc-name">Jessica Park</span>
-                            <span class="tc-role">CMO, DataStack</span>
-                        </div>
+                        <div class="tc-info"><span class="tc-name">Jessica Park</span><span class="tc-role">CMO, DataStack</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- ===== CTA ===== -->
     <section class="section cta-section">
         <div class="container">
-            <div class="cta-card" data-aos="fade-up">
+            <div class="cta-card animate-on-scroll">
                 <h2>Ready to Outperform?</h2>
                 <p>Join 50,000+ marketers who switched to MailForge and never looked back. Start your free 14-day trial — no credit card required.</p>
                 <div class="cta-actions">
@@ -845,13 +760,13 @@
                     <span>🔒 SOC 2 Compliant</span>
                     <span>🌍 GDPR Ready</span>
                     <span>⚡ 99.99% Uptime</span>
-                    <span>🏆 G2 Leader 2025</span>
+                    <span>🏆 G2 Leader 2026</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -859,10 +774,10 @@
                     <a href="#" class="nav-logo">
                         <div class="logo-icon">
                             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <rect width="32" height="32" rx="8" fill="url(#logo-gradient3)"/>
+                                <rect width="32" height="32" rx="8" fill="url(#lg3)"/>
                                 <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
                                 <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                <defs><linearGradient id="logo-gradient3" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+                                <defs><linearGradient id="lg3" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
                             </svg>
                         </div>
                         <span class="logo-text">Mail<span class="logo-accent">Forge</span></span>
@@ -877,12 +792,12 @@
                 </div>
                 <div class="footer-col">
                     <h4>Product</h4>
-                    <a href="#">Email Builder</a>
-                    <a href="#">Automation</a>
-                    <a href="#">Analytics</a>
-                    <a href="#">Templates</a>
-                    <a href="#">Integrations</a>
-                    <a href="#">API</a>
+                    <a href="#features">Features</a>
+                    <a href="#automation">Automation</a>
+                    <a href="#analytics">Analytics</a>
+                    <a href="#templates">Templates</a>
+                    <a href="#integrations">Integrations</a>
+                    <a href="#">API Docs</a>
                 </div>
                 <div class="footer-col">
                     <h4>Resources</h4>
@@ -917,28 +832,30 @@
         </div>
     </footer>
 
-    <!-- Modals -->
+    <!-- ===== MODALS ===== -->
     <div class="modal-overlay" id="signupModal">
         <div class="modal">
             <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
             <h2>Start Your Free Trial</h2>
             <p>14 days free. No credit card required.</p>
-            <form class="modal-form" onsubmit="handleSignup(event)">
+            <form class="modal-form" id="signupForm" novalidate>
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="John Smith" required>
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Smith" required>
+                    <span class="form-error">Please enter your name</span>
                 </div>
                 <div class="form-group">
-                    <label>Work Email</label>
-                    <input type="email" placeholder="john@company.com" required>
+                    <label for="signupEmail">Work Email</label>
+                    <input type="email" id="signupEmail" placeholder="john@company.com" required>
+                    <span class="form-error">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
-                    <label>Company</label>
-                    <input type="text" placeholder="Acme Inc">
+                    <label for="signupCompany">Company</label>
+                    <input type="text" id="signupCompany" placeholder="Acme Inc">
                 </div>
                 <div class="form-group">
-                    <label>Subscriber Count</label>
-                    <select>
+                    <label for="signupSize">Subscriber Count</label>
+                    <select id="signupSize">
                         <option>1 - 1,000</option>
                         <option>1,000 - 5,000</option>
                         <option>5,000 - 25,000</option>
@@ -957,21 +874,23 @@
             <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
             <h2>Welcome Back</h2>
             <p>Log in to your MailForge account</p>
-            <form class="modal-form" onsubmit="handleLogin(event)">
+            <form class="modal-form" id="loginForm" novalidate>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="john@company.com" required>
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="john@company.com" required>
+                    <span class="form-error">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="••••••••" required>
+                    <label for="loginPass">Password</label>
+                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                    <span class="form-error">Please enter your password</span>
                 </div>
                 <div class="form-row">
                     <label class="checkbox-label"><input type="checkbox"> Remember me</label>
                     <a href="#" class="form-link">Forgot password?</a>
                 </div>
                 <button type="submit" class="btn-primary btn-block">Log In</button>
-                <p class="form-footer">Don't have an account? <a href="#" onclick="closeModal('loginModal');openModal('signupModal')">Sign up free</a></p>
+                <p class="form-footer">Don't have an account? <a href="#" onclick="closeModal('loginModal');openModal('signupModal');return false;">Sign up free</a></p>
             </form>
         </div>
     </div>
@@ -981,24 +900,27 @@
             <button class="modal-close" onclick="closeModal('demoModal')">&times;</button>
             <h2>Book a Demo</h2>
             <p>See MailForge in action with a personalized walkthrough</p>
-            <form class="modal-form" onsubmit="handleDemo(event)">
+            <form class="modal-form" id="demoForm" novalidate>
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" placeholder="John" required>
+                        <label for="demoFirst">First Name</label>
+                        <input type="text" id="demoFirst" placeholder="John" required>
+                        <span class="form-error">Required</span>
                     </div>
                     <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" placeholder="Smith" required>
+                        <label for="demoLast">Last Name</label>
+                        <input type="text" id="demoLast" placeholder="Smith" required>
+                        <span class="form-error">Required</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Work Email</label>
-                    <input type="email" placeholder="john@company.com" required>
+                    <label for="demoEmail">Work Email</label>
+                    <input type="email" id="demoEmail" placeholder="john@company.com" required>
+                    <span class="form-error">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
-                    <label>Company Size</label>
-                    <select>
+                    <label for="demoSize">Company Size</label>
+                    <select id="demoSize">
                         <option>1-10 employees</option>
                         <option>11-50 employees</option>
                         <option>51-200 employees</option>
@@ -1007,8 +929,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>What are you most interested in?</label>
-                    <select>
+                    <label for="demoInterest">What are you most interested in?</label>
+                    <select id="demoInterest">
                         <option>AI Campaign Builder</option>
                         <option>Automation Workflows</option>
                         <option>Analytics & Attribution</option>
@@ -1021,10 +943,29 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal modal-success">
+            <div class="success-icon">🎉</div>
+            <h2 id="successTitle">You're In!</h2>
+            <p id="successMessage">Check your email for next steps.</p>
+            <button class="btn-primary btn-block" onclick="closeModal('successModal')">Got It</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
     <div class="toast" id="toast">
         <div class="toast-icon">✓</div>
         <div class="toast-message" id="toastMessage">Success!</div>
+    </div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p>🍪 We use cookies to improve your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p>
+        <div class="cookie-actions">
+            <button class="btn-ghost" onclick="dismissCookies()">Decline</button>
+            <button class="btn-primary btn-sm" onclick="acceptCookies()">Accept</button>
+        </div>
     </div>
 
     <script src="app.js"></script>

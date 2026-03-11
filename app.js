@@ -1,75 +1,59 @@
 // ============================================
-// MAILFORGE - Application JavaScript
+// MAILFORGE - Application JavaScript v2.0
+// Fixed: preloader, animations, interactivity,
+// forms, drag-drop, live feed, FAQ, cookies
 // ============================================
 
-// --- Preloader ---
+// --- Preloader (with fallback timeout) ---
 window.addEventListener('load', () => {
     setTimeout(() => {
-        document.getElementById('preloader').classList.add('hidden');
-        initAOS();
+        document.getElementById('preloader')?.classList.add('loaded');
+        initAnimations();
         animateCounters();
-    }, 800);
+        animateBars();
+        startLiveFeed();
+    }, 600);
 });
+// Fallback: force hide preloader after 4s even if load fails
+setTimeout(() => {
+    document.getElementById('preloader')?.classList.add('loaded');
+}, 4000);
 
-// --- Particles Background ---
-(function initParticles() {
+// --- Particles ---
+(function() {
     const canvas = document.getElementById('particles-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let particles = [];
-    let w, h;
+    let particles = [], w, h;
 
-    function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-    }
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
 
     class Particle {
-        constructor() {
-            this.reset();
-        }
+        constructor() { this.reset(); }
         reset() {
-            this.x = Math.random() * w;
-            this.y = Math.random() * h;
-            this.vx = (Math.random() - 0.5) * 0.3;
-            this.vy = (Math.random() - 0.5) * 0.3;
-            this.r = Math.random() * 2 + 0.5;
-            this.alpha = Math.random() * 0.4 + 0.1;
+            this.x = Math.random() * w; this.y = Math.random() * h;
+            this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3;
+            this.r = Math.random() * 2 + 0.5; this.alpha = Math.random() * 0.4 + 0.1;
         }
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(99, 102, 241, ${this.alpha})`;
-            ctx.fill();
-        }
+        update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset(); }
+        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(99,102,241,${this.alpha})`; ctx.fill(); }
     }
 
-    const count = Math.min(80, Math.floor(w * h / 15000));
+    const count = Math.min(60, Math.floor(w * h / 20000));
     for (let i = 0; i < count; i++) particles.push(new Particle());
 
     function animate() {
         ctx.clearRect(0, 0, w, h);
         particles.forEach(p => { p.update(); p.draw(); });
-
-        // Draw connections
         for (let i = 0; i < particles.length; i++) {
             for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
+                const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < 120) {
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(99, 102, 241, ${0.08 * (1 - dist / 120)})`;
-                    ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(99,102,241,${0.06 * (1 - dist / 120)})`; ctx.stroke();
                 }
             }
         }
@@ -78,67 +62,60 @@ window.addEventListener('load', () => {
     animate();
 })();
 
-// --- Navbar Scroll ---
+// --- Navbar ---
 const navbar = document.getElementById('navbar');
+const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    const scrolled = window.scrollY > 50;
+    navbar?.classList.toggle('scrolled', scrolled);
+    backToTop?.classList.toggle('visible', window.scrollY > 500);
 });
+backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// --- Mobile Nav Toggle ---
+// --- Mobile Nav ---
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
-navToggle?.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-});
-
-// Close mobile nav on link click
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
-});
+navToggle?.addEventListener('click', () => navLinks?.classList.toggle('open'));
+document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => navLinks?.classList.remove('open')));
 
 // --- Smooth Scroll ---
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
         e.preventDefault();
-        const target = document.querySelector(a.getAttribute('href'));
+        const href = a.getAttribute('href');
+        if (href === '#') return window.scrollTo({ top: 0, behavior: 'smooth' });
+        const target = document.querySelector(href);
         if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
-// --- Simple AOS (Animate on Scroll) ---
-function initAOS() {
+// --- Scroll Animations ---
+function initAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const delay = entry.target.dataset.aosDelay || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('aos-animate');
-                }, parseInt(delay));
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 }
 
 // --- Counter Animation ---
 function animateCounters() {
-    const counters = document.querySelectorAll('[data-count]');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const el = entry.target;
                 const target = parseFloat(el.dataset.count);
-                const duration = 2000;
-                const start = performance.now();
+                if (isNaN(target)) return;
+                const duration = 2000, start = performance.now();
                 const isDecimal = target % 1 !== 0;
-
                 function update(now) {
-                    const elapsed = now - start;
-                    const progress = Math.min(elapsed / duration, 1);
+                    const progress = Math.min((now - start) / duration, 1);
                     const eased = 1 - Math.pow(1 - progress, 3);
-                    const current = target * eased;
-                    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+                    el.textContent = isDecimal ? (target * eased).toFixed(1) : Math.floor(target * eased);
                     if (progress < 1) requestAnimationFrame(update);
                 }
                 requestAnimationFrame(update);
@@ -146,7 +123,78 @@ function animateCounters() {
             }
         });
     }, { threshold: 0.5 });
-    counters.forEach(c => observer.observe(c));
+    document.querySelectorAll('[data-count]').forEach(c => observer.observe(c));
+}
+
+// --- Animated Bars ---
+function animateBars() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.bar').forEach((bar, i) => {
+                    setTimeout(() => {
+                        bar.style.height = bar.dataset.height + '%';
+                    }, i * 100);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    const bars = document.getElementById('animatedBars');
+    if (bars) observer.observe(bars);
+}
+
+// --- Mini Stats Count Up ---
+(function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.countUp);
+                if (isNaN(target)) return;
+                const duration = 2000, start = performance.now();
+                function update(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(target * eased).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count-up]').forEach(el => observer.observe(el));
+})();
+
+// --- Live Feed ---
+function startLiveFeed() {
+    const feed = document.getElementById('liveFeed');
+    if (!feed) return;
+    const events = [
+        { icon: '📧', text: 'sarah@luminary.co opened "Summer Sale"' },
+        { icon: '🛒', text: 'marcus@threads.co clicked "Shop Now"' },
+        { icon: '💰', text: '$47.99 purchase from welcome series' },
+        { icon: '📥', text: 'New subscriber: alex@startup.io' },
+        { icon: '✅', text: 'Campaign "Flash Deal" sent to 12.4K' },
+        { icon: '🎯', text: 'A/B test winner: Variant B (+23%)' },
+        { icon: '📈', text: 'Open rate trending up: 48.2%' },
+        { icon: '💎', text: 'VIP segment grew by 156 today' },
+        { icon: '🔔', text: 'Automation triggered: Cart recovery' },
+        { icon: '⚡', text: 'AI optimized send time for 8.2K' },
+    ];
+    let idx = 0;
+    function addEvent() {
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        const ev = events[idx % events.length];
+        item.innerHTML = `<span class="feed-icon">${ev.icon}</span> ${ev.text}`;
+        feed.prepend(item);
+        if (feed.children.length > 3) feed.removeChild(feed.lastChild);
+        idx++;
+    }
+    addEvent();
+    setInterval(addEvent, 3000);
 }
 
 // --- Workflow Builder ---
@@ -175,16 +223,12 @@ const workflows = {
         { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 5 days', sub: '' },
         { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Re-engaged?', sub: 'Track activity' },
         { type: 'action', icon: '🎁', iconClass: 'teal', label: 'Exclusive Offer', sub: '25% comeback deal' },
-        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 7 days', sub: '' },
-        { type: 'action', icon: '👋', iconClass: 'blue', label: 'Final Goodbye', sub: 'Sunset or re-engage' },
     ],
     birthday: [
         { type: 'trigger', icon: '🎂', iconClass: 'green', label: 'Birthday Match', sub: '7 days before' },
         { type: 'action', icon: '📧', iconClass: 'blue', label: 'Birthday Preview', sub: 'Teaser of gift' },
         { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait until Birthday', sub: '' },
         { type: 'action', icon: '🎁', iconClass: 'teal', label: 'Birthday Gift Email', sub: 'Special discount code' },
-        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 3 days', sub: '' },
-        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Used Gift?', sub: 'Track redemption' },
     ],
     upsell: [
         { type: 'trigger', icon: '✅', iconClass: 'green', label: 'Purchase Complete', sub: 'Order confirmed' },
@@ -192,15 +236,12 @@ const workflows = {
         { type: 'action', icon: '📧', iconClass: 'blue', label: 'Thank You Email', sub: 'Order details + tips' },
         { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 5 days', sub: 'Usage window' },
         { type: 'action', icon: '📈', iconClass: 'teal', label: 'Cross-Sell Email', sub: 'AI recommendations' },
-        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Clicked Product?', sub: '' },
-        { type: 'action', icon: '💎', iconClass: 'blue', label: 'VIP Offer', sub: 'Loyalty reward' },
     ],
     leadscoring: [
         { type: 'trigger', icon: '📥', iconClass: 'green', label: 'Lead Captured', sub: 'Form or landing page' },
         { type: 'action', icon: '🎯', iconClass: 'blue', label: 'Score Lead', sub: 'Behavioral + firmographic' },
         { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Score > 50?', sub: 'Hot lead threshold' },
         { type: 'action', icon: '📧', iconClass: 'teal', label: 'Nurture Sequence', sub: 'Educational content' },
-        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait for Score Change', sub: '' },
         { type: 'action', icon: '🔔', iconClass: 'blue', label: 'Notify Sales Team', sub: 'Slack + CRM update' },
     ],
 };
@@ -210,36 +251,17 @@ function renderWorkflow(name) {
     if (!canvas) return;
     const flow = workflows[name] || workflows.welcome;
     canvas.innerHTML = '';
-
     flow.forEach((node, i) => {
         const el = document.createElement('div');
         el.className = `wf-node ${node.type}`;
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(10px)';
-        el.innerHTML = `
-            <div class="wf-icon ${node.iconClass}">${node.icon}</div>
-            <div>
-                <span class="wf-label">${node.label}</span>
-                ${node.sub ? `<span class="wf-sublabel">${node.sub}</span>` : ''}
-            </div>
-        `;
+        el.style.opacity = '0'; el.style.transform = 'translateY(10px)';
+        el.innerHTML = `<div class="wf-icon ${node.iconClass}">${node.icon}</div><div><span class="wf-label">${node.label}</span>${node.sub ? `<span class="wf-sublabel">${node.sub}</span>` : ''}</div>`;
         canvas.appendChild(el);
-
-        setTimeout(() => {
-            el.style.transition = 'all 0.4s ease';
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        }, i * 80);
-
-        if (i < flow.length - 1) {
-            const conn = document.createElement('div');
-            conn.className = 'wf-connector';
-            canvas.appendChild(conn);
-        }
+        setTimeout(() => { el.style.transition = 'all 0.4s ease'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, i * 80);
+        if (i < flow.length - 1) { const c = document.createElement('div'); c.className = 'wf-connector'; canvas.appendChild(c); }
     });
 }
 
-// Workflow item clicks
 document.querySelectorAll('.workflow-item').forEach(item => {
     item.addEventListener('click', () => {
         document.querySelectorAll('.workflow-item').forEach(i => i.classList.remove('active'));
@@ -247,8 +269,6 @@ document.querySelectorAll('.workflow-item').forEach(item => {
         renderWorkflow(item.dataset.workflow);
     });
 });
-
-// Initial render
 renderWorkflow('welcome');
 
 // --- Template Gallery ---
@@ -290,41 +310,30 @@ function renderTemplates(category) {
     if (!grid) return;
     const items = templates[category] || templates.ecommerce;
     grid.innerHTML = '';
-
     items.forEach((t, i) => {
         const card = document.createElement('div');
         card.className = 'template-card';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
+        card.style.opacity = '0'; card.style.transform = 'translateY(10px)';
         card.innerHTML = `
             <div class="template-thumb">
-                <div class="template-thumb-inner" style="background: linear-gradient(135deg, ${t.colors[0]}15, ${t.colors[1]}15)">
-                    <div class="tt-header" style="background: ${t.colors[0]}30; width: 50%"></div>
-                    <div class="tt-hero" style="background: linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]}); opacity: 0.6"></div>
+                <div class="template-thumb-inner" style="background:linear-gradient(135deg,${t.colors[0]}15,${t.colors[1]}15)">
+                    <div class="tt-header" style="background:${t.colors[0]}30;width:50%"></div>
+                    <div class="tt-hero" style="background:linear-gradient(135deg,${t.colors[0]},${t.colors[1]});opacity:0.6"></div>
                     <div class="tt-body">
-                        <div class="tt-line" style="background: ${t.colors[0]}20; width: 80%"></div>
-                        <div class="tt-line" style="background: ${t.colors[0]}15; width: 100%"></div>
-                        <div class="tt-line" style="background: ${t.colors[0]}15; width: 60%"></div>
-                        <div class="tt-cta" style="background: ${t.colors[0]}; opacity: 0.5"></div>
+                        <div class="tt-line" style="background:${t.colors[0]}20;width:80%"></div>
+                        <div class="tt-line" style="background:${t.colors[0]}15;width:100%"></div>
+                        <div class="tt-line" style="background:${t.colors[0]}15;width:60%"></div>
+                        <div class="tt-cta" style="background:${t.colors[0]};opacity:0.5"></div>
                     </div>
                 </div>
             </div>
-            <div class="template-info">
-                <h4>${t.name}</h4>
-                <span>${t.type}</span>
-            </div>
-        `;
+            <div class="template-info"><h4>${t.name}</h4><span>${t.type}</span></div>`;
+        card.addEventListener('click', () => showToast(`Template "${t.name}" selected! Customize it in the editor.`));
         grid.appendChild(card);
-
-        setTimeout(() => {
-            card.style.transition = 'all 0.4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, i * 100);
+        setTimeout(() => { card.style.transition = 'all 0.4s ease'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, i * 100);
     });
 }
 
-// Tab clicks
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -332,121 +341,211 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
         renderTemplates(btn.dataset.tab);
     });
 });
-
 renderTemplates('ecommerce');
 
+// --- Demo Tab Switching ---
+document.querySelectorAll('.demo-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+    });
+});
+
+// --- Drag and Drop ---
+(function initDragDrop() {
+    const dropZone = document.getElementById('dropZone');
+    if (!dropZone) return;
+
+    const blockLabels = { text: '📝 Text Block', image: '🖼️ Image Block', button: '🔘 Button', columns: '📊 2-Column Layout', hero: '🎨 Hero Section', product: '📦 Product Card', timer: '⏱️ Countdown Timer', social: '📱 Social Icons', ai: '🤖 AI-Generated Content' };
+
+    document.querySelectorAll('.demo-block').forEach(block => {
+        block.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', block.dataset.block);
+            block.style.opacity = '0.5';
+        });
+        block.addEventListener('dragend', () => { block.style.opacity = '1'; });
+    });
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const type = e.dataTransfer.getData('text/plain');
+        const label = blockLabels[type] || type;
+        const el = document.createElement('div');
+        el.className = 'dropped-block';
+        el.innerHTML = `${label} <span style="margin-left:auto;cursor:pointer;opacity:0.5" onclick="this.parentElement.remove()">✕</span>`;
+        dropZone.querySelector('p')?.remove();
+        dropZone.appendChild(el);
+    });
+})();
+
 // --- Heatmap ---
-(function generateHeatmap() {
-    const grid = document.querySelector('.heatmap-grid');
+(function() {
+    const grid = document.getElementById('heatmapGrid');
     if (!grid) return;
-    const hours = 6;
-    for (let h = 0; h < hours; h++) {
-        for (let d = 0; d < 7; d++) {
-            const cell = document.createElement('div');
-            cell.className = 'heatmap-cell';
-            const intensity = Math.random();
-            const alpha = 0.1 + intensity * 0.8;
-            cell.style.background = intensity > 0.7
-                ? `rgba(99, 102, 241, ${alpha})`
-                : intensity > 0.4
-                    ? `rgba(139, 92, 246, ${alpha * 0.6})`
-                    : `rgba(255, 255, 255, ${alpha * 0.1})`;
-            grid.appendChild(cell);
-        }
-    }
+    // Seeded data for consistency
+    const data = [0.2,0.5,0.7,0.9,0.8,0.4,0.1, 0.3,0.6,0.8,0.95,0.85,0.5,0.15, 0.1,0.4,0.6,0.7,0.6,0.3,0.1, 0.15,0.3,0.5,0.65,0.55,0.25,0.05, 0.25,0.55,0.75,0.88,0.78,0.45,0.12, 0.1,0.35,0.55,0.7,0.6,0.3,0.08];
+    data.forEach(v => {
+        const cell = document.createElement('div');
+        cell.className = 'heatmap-cell';
+        cell.style.background = v > 0.7 ? `rgba(99,102,241,${0.3 + v * 0.7})` : v > 0.4 ? `rgba(139,92,246,${0.15 + v * 0.4})` : `rgba(255,255,255,${v * 0.1})`;
+        cell.title = `${Math.round(v * 100)}% engagement`;
+        grid.appendChild(cell);
+    });
 })();
 
 // --- Pricing Toggle ---
 const pricingToggle = document.getElementById('pricingToggle');
 pricingToggle?.addEventListener('change', () => {
     const isAnnual = pricingToggle.checked;
-    document.querySelectorAll('.price-amount.monthly').forEach(el => {
-        el.style.display = isAnnual ? 'none' : 'inline';
-    });
-    document.querySelectorAll('.price-amount.annual').forEach(el => {
-        el.style.display = isAnnual ? 'inline' : 'none';
-    });
-    document.querySelectorAll('.toggle-label').forEach((label, i) => {
-        label.classList.toggle('active', i === (isAnnual ? 1 : 0));
+    document.querySelectorAll('.price-amount.monthly').forEach(el => el.classList.toggle('hidden', isAnnual));
+    document.querySelectorAll('.price-amount.annual').forEach(el => el.classList.toggle('hidden', !isAnnual));
+    document.getElementById('monthlyLabel')?.classList.toggle('active', !isAnnual);
+    document.getElementById('annualLabel')?.classList.toggle('active', isAnnual);
+});
+
+// --- FAQ Accordion ---
+document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        // Toggle clicked
+        if (!isOpen) item.classList.add('open');
     });
 });
 
 // --- Modals ---
-function openModal(id) {
-    document.getElementById(id)?.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+function openModal(id) { document.getElementById(id)?.classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id)?.classList.remove('active'); document.body.style.overflow = ''; }
+window.openModal = openModal;
+window.closeModal = closeModal;
 
-function closeModal(id) {
-    document.getElementById(id)?.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => {
-        if (e.target === overlay) {
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    });
+    overlay.addEventListener('click', e => { if (e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; } });
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); document.body.style.overflow = ''; }
 });
 
-// Close on Escape
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay.active').forEach(m => {
-            m.classList.remove('active');
-        });
-        document.body.style.overflow = '';
+// --- Form Validation & Handling ---
+function validateForm(form) {
+    let valid = true;
+    form.querySelectorAll('input[required]').forEach(input => {
+        input.classList.remove('error');
+        if (!input.value.trim()) { input.classList.add('error'); valid = false; }
+        else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) { input.classList.add('error'); valid = false; }
+    });
+    return valid;
+}
+
+function showSuccess(title, message) {
+    document.getElementById('successTitle').textContent = title;
+    document.getElementById('successMessage').textContent = message;
+    openModal('successModal');
+}
+
+document.getElementById('signupForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (validateForm(e.target)) {
+        closeModal('signupModal');
+        showSuccess("🎉 You're In!", 'Check your email for next steps. Your 14-day free trial starts now.');
+        e.target.reset();
     }
 });
 
-// --- Form Handlers ---
+document.getElementById('loginForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (validateForm(e.target)) {
+        closeModal('loginModal');
+        showSuccess('Welcome Back!', 'Redirecting to your dashboard...');
+        e.target.reset();
+    }
+});
+
+document.getElementById('demoForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (validateForm(e.target)) {
+        closeModal('demoModal');
+        showSuccess('📅 Demo Booked!', "We'll send a calendar invite to your email shortly.");
+        e.target.reset();
+    }
+});
+
+// Clear error on input
+document.querySelectorAll('.modal-form input').forEach(input => {
+    input.addEventListener('input', () => input.classList.remove('error'));
+});
+
+// --- Toast ---
 function showToast(message) {
     const toast = document.getElementById('toast');
     const msg = document.getElementById('toastMessage');
+    if (!toast || !msg) return;
     msg.textContent = message;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
-function handleSignup(e) {
-    e.preventDefault();
-    closeModal('signupModal');
-    showToast('🎉 Account created! Check your email to get started.');
-}
-
-function handleLogin(e) {
-    e.preventDefault();
-    closeModal('loginModal');
-    showToast('Welcome back! Redirecting to dashboard...');
-}
-
-function handleDemo(e) {
-    e.preventDefault();
-    closeModal('demoModal');
-    showToast('📅 Demo booked! We\'ll send a calendar invite shortly.');
-}
-
 // --- Active Nav Link ---
-const sections = document.querySelectorAll('.section[id]');
+const sections = document.querySelectorAll('section[id]');
 window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY + 100;
+    const scrollY = window.scrollY + 120;
+    let current = '';
     sections.forEach(section => {
-        const top = section.offsetTop;
-        const height = section.offsetHeight;
-        const id = section.getAttribute('id');
-        const link = document.querySelector(`.nav-link[href="#${id}"]`);
-        if (link) {
-            link.classList.toggle('active', scrollY >= top && scrollY < top + height);
-        }
+        if (scrollY >= section.offsetTop) current = section.getAttribute('id');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
     });
 });
 
-// Make functions globally accessible
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.handleSignup = handleSignup;
-window.handleLogin = handleLogin;
-window.handleDemo = handleDemo;
+// --- Cookie Banner ---
+function acceptCookies() {
+    document.getElementById('cookieBanner')?.classList.remove('visible');
+    try { localStorage.setItem('cookies_accepted', '1'); } catch(e) {}
+}
+function dismissCookies() {
+    document.getElementById('cookieBanner')?.classList.remove('visible');
+    try { localStorage.setItem('cookies_accepted', '0'); } catch(e) {}
+}
+window.acceptCookies = acceptCookies;
+window.dismissCookies = dismissCookies;
+
+// Show cookie banner after 2s if not already accepted
+setTimeout(() => {
+    try {
+        if (!localStorage.getItem('cookies_accepted')) {
+            document.getElementById('cookieBanner')?.classList.add('visible');
+        }
+    } catch(e) {
+        document.getElementById('cookieBanner')?.classList.add('visible');
+    }
+}, 2000);
+
+// --- Hero Typing Effect ---
+(function() {
+    const el = document.getElementById('heroTyping');
+    if (!el) return;
+    const phrases = ['Actually Converts', 'Drives Revenue', 'Outperforms All', 'Scales With You'];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+
+    function type() {
+        const current = phrases[phraseIdx];
+        if (!deleting) {
+            el.textContent = current.substring(0, charIdx + 1);
+            charIdx++;
+            if (charIdx === current.length) { setTimeout(() => { deleting = true; type(); }, 2000); return; }
+            setTimeout(type, 80);
+        } else {
+            el.textContent = current.substring(0, charIdx - 1);
+            charIdx--;
+            if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(type, 400); return; }
+            setTimeout(type, 40);
+        }
+    }
+    setTimeout(type, 3000);
+})();
