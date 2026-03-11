@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailForge — Advanced Email Marketing Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+/* ============================================
+   MAILFORGE - Advanced Email Marketing Platform
+   ============================================ */
+
+/* --- CSS Variables --- */
+:root {
+    --primary: #6366F1;
+    --primary-dark: #4F46E5;
+    --primary-light: #818CF8;
+    --purple: #8B5CF6;
+    --teal: #06B6D4;
+    --orange: #F59E0B;
+    --pink: #EC4899;
+    --red: #EF4444;
+    --green: #10B981;
+
+    --bg-dark: #0B0B1A;
+    --bg-card: #111127;
+    --bg-card-hover: #161638;
+    --bg-surface: #1A1A3E;
+    --border: rgba(99, 102, 241, 0.15);
+    --border-light: rgba(255, 255, 255, 0.06);
+
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+    --white: #FFFFFF;
+
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+
+    --radius: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 60px rgba(99, 102, 241, 0.15);
+
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+    font-family: var(--font);
+    background: var(--bg-dark);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary-light); text-decoration: none; transition: var(--transition); }
+a:hover { color: var(--white); }
+img { max-width: 100%; display: block; }
+
+/* --- Preloader --- */
+#preloader {
+    position: fixed; inset: 0; z-index: 10000;
+    background: var(--bg-dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; }
+.loader-ring {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+.loader-text { margin-top: 16px; color: var(--text-muted); font-size: 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Particles Canvas --- */
+#particles-canvas {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; opacity: 0.4;
+}
+
+/* --- Container --- */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* --- Buttons --- */
+.btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: white; font-weight: 600; font-size: 15px;
+    cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+.btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; border: 1.5px solid var(--border);
+    border-radius: 10px; background: transparent;
+    color: var(--text); font-weight: 600; font-size: 15px;
+    cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+}
+.btn-outline:hover { border-color: var(--primary); background: rgba(99,102,241,0.05); }
+.btn-ghost {
+    padding: 10px 20px; border: none; background: transparent;
+    color: var(--text-muted); font-weight: 500; font-size: 14px;
+    cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+}
+.btn-ghost:hover { color: var(--white); }
+.btn-lg { padding: 16px 36px; font-size: 16px; border-radius: 12px; }
+.btn-block { width: 100%; justify-content: center; }
+.btn-white {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 36px; border: none; border-radius: 12px;
+    background: white; color: var(--bg-dark); font-weight: 700;
+    font-size: 16px; cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,255,255,0.2); }
+.btn-ghost-white {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 36px; border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 12px; background: transparent;
+    color: white; font-weight: 600; font-size: 16px;
+    cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+}
+.btn-ghost-white:hover { border-color: white; background: rgba(255,255,255,0.05); }
+
+/* --- Navigation --- */
+.navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 16px 0; transition: var(--transition);
+}
+.navbar.scrolled {
+    background: rgba(11, 11, 26, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-light);
+    padding: 10px 0;
+}
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.logo-text { font-size: 22px; font-weight: 800; color: white; }
+.logo-accent { color: var(--primary-light); }
+.nav-links { display: flex; gap: 32px; }
+.nav-link {
+    color: var(--text-muted); font-size: 14px; font-weight: 500;
+    transition: var(--transition); position: relative;
+}
+.nav-link:hover { color: white; }
+.nav-link::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 2px; background: var(--primary);
+    transition: var(--transition);
+}
+.nav-link:hover::after { width: 100%; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-toggle {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-toggle span {
+    width: 24px; height: 2px; background: var(--text);
+    transition: var(--transition);
+}
+
+/* --- Hero --- */
+.hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px 0 60px; overflow: hidden;
+}
+.hero-bg-shapes { position: absolute; inset: 0; pointer-events: none; }
+.shape {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.15;
+}
+.shape-1 { width: 600px; height: 600px; background: var(--primary); top: -200px; right: -200px; }
+.shape-2 { width: 400px; height: 400px; background: var(--purple); bottom: -100px; left: -100px; }
+.shape-3 { width: 300px; height: 300px; background: var(--teal); top: 40%; left: 30%; }
+
+.hero .container {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center; position: relative; z-index: 1;
+}
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 100px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-size: 13px; color: var(--primary-light);
+    margin-bottom: 24px; width: fit-content;
+}
+.badge-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+}
+.hero-title {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 900; line-height: 1.1;
+    color: white; margin-bottom: 24px;
+}
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-light), var(--purple), var(--teal));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.hero-subtitle {
+    font-size: 18px; color: var(--text-muted);
+    max-width: 560px; margin-bottom: 36px; line-height: 1.7;
+}
+.hero-cta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-stats {
+    display: flex; align-items: center; gap: 32px;
+}
+.stat { text-align: center; }
+.stat-number {
+    font-size: 32px; font-weight: 800; color: white;
+    font-variant-numeric: tabular-nums;
+}
+.stat-suffix { font-size: 24px; font-weight: 700; color: var(--primary-light); }
+.stat-label { display: block; font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.stat-divider { width: 1px; height: 40px; background: var(--border); }
+
+/* --- Dashboard Preview --- */
+.hero-visual { position: relative; }
+.dashboard-preview {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.preview-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border-light);
+    background: rgba(255,255,255,0.02);
+}
+.preview-dots { display: flex; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #FF5F57; }
+.dot.yellow { background: #FEBC2E; }
+.dot.green { background: #28C840; }
+.preview-title { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+.preview-body { padding: 20px; }
+
+.mini-chart { margin-bottom: 16px; }
+.chart-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; font-size: 13px; color: var(--text-muted);
+}
+.chart-badge { font-size: 12px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+.chart-badge.up { background: rgba(16,185,129,0.1); color: var(--green); }
+.chart-bars {
+    display: flex; gap: 8px; align-items: flex-end; height: 80px;
+}
+.bar {
+    flex: 1; border-radius: 4px 4px 0 0;
+    background: linear-gradient(to top, rgba(99,102,241,0.3), rgba(99,102,241,0.1));
+    height: var(--height); transition: var(--transition);
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    position: relative;
+}
+.bar span {
+    position: absolute; bottom: -18px;
+    font-size: 10px; color: var(--text-dim);
+}
+.bar.active { background: linear-gradient(to top, var(--primary), var(--purple)); }
+.bar:hover { background: linear-gradient(to top, var(--primary), var(--purple)); opacity: 0.8; }
+
+.mini-stats-row {
+    display: flex; gap: 12px; margin: 28px 0 16px;
+}
+.mini-stat {
+    flex: 1; padding: 10px 12px;
+    background: var(--bg-surface); border-radius: 8px;
+}
+.ms-label { display: block; font-size: 11px; color: var(--text-dim); }
+.ms-value { display: block; font-size: 16px; font-weight: 700; color: white; margin-top: 2px; }
+
+.mini-email-preview { padding: 12px; background: var(--bg-surface); border-radius: 8px; }
+.email-line {
+    height: 8px; border-radius: 4px; margin-bottom: 8px;
+}
+.email-line.subject { width: 60%; background: var(--primary); opacity: 0.6; }
+.email-line.body { width: 90%; background: rgba(255,255,255,0.08); }
+.email-line.body.long { width: 100%; }
+.email-line.cta { width: 30%; background: var(--purple); opacity: 0.6; height: 24px; border-radius: 6px; }
+
+/* Floating Cards */
+.floating-card {
+    position: absolute; display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px; background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    animation: float 6s ease-in-out infinite;
+}
+.card-1 { top: -10px; left: -30px; animation-delay: 0s; }
+.card-2 { bottom: 40px; right: -20px; animation-delay: 3s; }
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.fc-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700;
+}
+.fc-icon.green { background: rgba(16,185,129,0.15); color: var(--green); }
+.fc-icon.blue { background: rgba(99,102,241,0.15); color: var(--primary-light); }
+.fc-title { font-size: 13px; font-weight: 600; color: white; display: block; }
+.fc-sub { font-size: 11px; color: var(--text-dim); }
+
+/* Hero Logos */
+.hero-logos {
+    text-align: center; padding: 60px 0 0;
+    position: relative; z-index: 1;
+}
+.hero-logos p { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 2px; }
+.logo-strip {
+    display: flex; justify-content: center; gap: 48px;
+    flex-wrap: wrap; align-items: center;
+}
+.client-logo {
+    font-size: 18px; font-weight: 700; color: var(--text-dim);
+    opacity: 0.4; transition: var(--transition);
+    letter-spacing: 1px;
+}
+.client-logo:hover { opacity: 0.8; color: var(--text-muted); }
+
+/* --- Sections --- */
+.section { padding: 120px 0; position: relative; }
+.section-header { text-align: center; max-width: 700px; margin: 0 auto 64px; }
+.section-tag {
+    display: inline-block; padding: 6px 14px; border-radius: 100px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-size: 13px; font-weight: 600; color: var(--primary-light);
+    margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+}
+.section-tag.light {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    color: white;
+}
+.section-title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800; line-height: 1.15;
+    color: white; margin-bottom: 16px;
+}
+.section-subtitle { font-size: 17px; color: var(--text-muted); line-height: 1.7; }
+
+/* --- Features Grid --- */
+.features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+.feature-card {
+    padding: 32px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+.feature-card:hover {
+    border-color: var(--border);
+    background: var(--bg-card-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+.feature-card.featured {
+    grid-column: span 1;
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08));
+    border-color: rgba(99,102,241,0.25);
+}
+.feature-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(99, 102, 241, 0.1); color: var(--primary-light);
+    margin-bottom: 20px;
+}
+.feature-icon.purple { background: rgba(139,92,246,0.1); color: var(--purple); }
+.feature-icon.teal { background: rgba(6,182,212,0.1); color: var(--teal); }
+.feature-icon.orange { background: rgba(245,158,11,0.1); color: var(--orange); }
+.feature-icon.pink { background: rgba(236,72,153,0.1); color: var(--pink); }
+.feature-icon.red { background: rgba(239,68,68,0.1); color: var(--red); }
+.feature-card h3 { font-size: 20px; font-weight: 700; color: white; margin-bottom: 10px; }
+.feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+.feature-metrics {
+    display: flex; gap: 16px; margin-top: 20px; padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+}
+.metric {
+    font-size: 13px; color: var(--text-muted);
+}
+.metric strong { color: var(--primary-light); }
+
+/* --- Automation Builder --- */
+.automation-builder {
+    display: grid; grid-template-columns: 240px 1fr 220px;
+    gap: 0; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg); overflow: hidden;
+    min-height: 480px;
+}
+.builder-sidebar {
+    padding: 20px; border-right: 1px solid var(--border-light);
+    background: rgba(0,0,0,0.2);
+}
+.builder-sidebar h4 { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.workflow-list { display: flex; flex-direction: column; gap: 4px; }
+.workflow-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 8px;
+    cursor: pointer; transition: var(--transition);
+}
+.workflow-item:hover { background: rgba(255,255,255,0.03); }
+.workflow-item.active {
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.2);
+}
+.wi-icon { font-size: 20px; }
+.wi-name { display: block; font-size: 13px; font-weight: 600; color: white; }
+.wi-desc { display: block; font-size: 11px; color: var(--text-dim); }
+
+.builder-canvas {
+    padding: 30px; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+}
+.workflow-visual {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; width: 100%;
+}
+.wf-node {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 10px; width: 260px;
+    transition: var(--transition); position: relative;
+}
+.wf-node:hover { border-color: var(--primary); transform: scale(1.02); }
+.wf-node.trigger { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.05); }
+.wf-node.action { border-color: rgba(99,102,241,0.3); }
+.wf-node.condition { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.05); border-radius: 10px; transform: rotate(0deg); }
+.wf-node.delay { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.05); }
+.wf-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+}
+.wf-icon.green { background: rgba(16,185,129,0.15); }
+.wf-icon.blue { background: rgba(99,102,241,0.15); }
+.wf-icon.orange { background: rgba(245,158,11,0.15); }
+.wf-icon.purple { background: rgba(139,92,246,0.15); }
+.wf-icon.teal { background: rgba(6,182,212,0.15); }
+.wf-label { font-size: 13px; font-weight: 600; color: white; }
+.wf-sublabel { font-size: 11px; color: var(--text-dim); display: block; }
+.wf-connector {
+    width: 2px; height: 24px;
+    background: linear-gradient(to bottom, var(--border), rgba(99,102,241,0.3));
+}
+
+.builder-stats {
+    padding: 20px; border-left: 1px solid var(--border-light);
+    background: rgba(0,0,0,0.2);
+}
+.builder-stats h4 { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.auto-stat { margin-bottom: 20px; }
+.as-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.as-fill {
+    height: 100%; border-radius: 3px; width: var(--width);
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    transition: width 1.5s ease;
+}
+.as-fill.purple { background: linear-gradient(90deg, var(--purple), #A78BFA); }
+.as-fill.teal { background: linear-gradient(90deg, var(--teal), #22D3EE); }
+.as-fill.orange { background: linear-gradient(90deg, var(--orange), #FBBF24); }
+.as-info { display: flex; justify-content: space-between; font-size: 12px; }
+.as-info span:first-child { color: var(--text-muted); }
+.as-val { color: white; font-weight: 600; }
+
+/* --- Templates --- */
+.template-tabs {
+    display: flex; gap: 8px; justify-content: center;
+    margin-bottom: 40px; flex-wrap: wrap;
+}
+.tab-btn {
+    padding: 10px 24px; border: 1px solid var(--border-light);
+    border-radius: 100px; background: transparent;
+    color: var(--text-muted); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: var(--transition);
+    font-family: var(--font);
+}
+.tab-btn:hover { border-color: var(--border); color: white; }
+.tab-btn.active {
+    background: var(--primary); border-color: var(--primary);
+    color: white;
+}
+
+.template-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px; margin-bottom: 60px;
+}
+.template-card {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius); overflow: hidden;
+    transition: var(--transition); cursor: pointer;
+}
+.template-card:hover {
+    transform: translateY(-4px); border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+.template-thumb {
+    height: 200px; position: relative; overflow: hidden;
+}
+.template-thumb-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; padding: 16px;
+}
+.tt-header { height: 24px; border-radius: 4px; margin-bottom: 8px; }
+.tt-hero { flex: 1; border-radius: 6px; margin-bottom: 8px; }
+.tt-body { display: flex; flex-direction: column; gap: 4px; }
+.tt-line { height: 6px; border-radius: 3px; }
+.tt-cta { height: 20px; width: 60%; border-radius: 4px; margin-top: 4px; }
+.template-info { padding: 14px; }
+.template-info h4 { font-size: 14px; font-weight: 600; color: white; margin-bottom: 4px; }
+.template-info span { font-size: 12px; color: var(--text-dim); }
+
+/* --- Builder Demo --- */
+.demo-window {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+.demo-header {
+    display: flex; align-items: center; gap: 20px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border-light);
+    background: rgba(0,0,0,0.3);
+}
+.demo-tabs { display: flex; gap: 0; margin-left: auto; }
+.demo-tab {
+    padding: 6px 16px; font-size: 12px; color: var(--text-dim);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: var(--transition);
+}
+.demo-tab.active { color: var(--primary-light); border-color: var(--primary); }
+.demo-body { display: flex; min-height: 400px; }
+.demo-sidebar {
+    width: 120px; padding: 12px;
+    border-right: 1px solid var(--border-light);
+    background: rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; gap: 6px;
+}
+.demo-block {
+    padding: 8px 10px; border-radius: 6px;
+    background: var(--bg-surface); border: 1px solid var(--border-light);
+    font-size: 11px; color: var(--text-muted);
+    cursor: grab; transition: var(--transition);
+    display: flex; align-items: center; gap: 6px;
+}
+.demo-block:hover { border-color: var(--primary); background: rgba(99,102,241,0.05); }
+.demo-block span { font-size: 14px; }
+.demo-canvas { flex: 1; padding: 24px; display: flex; justify-content: center; }
+
+.email-builder-preview {
+    width: 100%; max-width: 380px;
+    background: white; border-radius: 8px;
+    overflow: hidden; box-shadow: var(--shadow);
+}
+.ebp-header {
+    padding: 16px; background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+.ebp-logo { width: 80px; height: 20px; background: var(--primary); border-radius: 4px; opacity: 0.7; }
+.ebp-hero { padding: 24px; text-align: center; }
+.ebp-hero-img {
+    width: 100%; height: 140px; border-radius: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    margin-bottom: 16px;
+}
+.ebp-hero h3 { font-size: 18px; color: #1a1a2e; margin-bottom: 8px; }
+.ebp-hero p { font-size: 13px; color: #666; margin-bottom: 16px; }
+.ebp-cta {
+    padding: 10px 28px; border: none; border-radius: 6px;
+    background: var(--primary); color: white; font-weight: 600;
+    font-size: 14px; cursor: pointer;
+}
+.ebp-products { display: flex; gap: 12px; padding: 0 24px 24px; }
+.ebp-product { flex: 1; text-align: center; }
+.ebp-product-img {
+    height: 80px; border-radius: 6px; margin-bottom: 8px;
+    background: #f0f0f5;
+}
+.ebp-product-name { display: block; font-size: 12px; color: #333; font-weight: 600; }
+.ebp-product-price { font-size: 14px; color: var(--primary); font-weight: 700; }
+.ebp-footer {
+    padding: 16px; text-align: center;
+    border-top: 1px solid #e9ecef; background: #f8f9fa;
+}
+.ebp-social { display: flex; justify-content: center; gap: 12px; margin-bottom: 8px; font-size: 16px; }
+.ebp-footer p { font-size: 10px; color: #999; }
+
+/* --- Strategy --- */
+.strategy-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+.strategy-card {
+    padding: 32px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+}
+.strategy-card:hover {
+    border-color: var(--border);
+    transform: translateY(-4px);
+}
+.sc-number {
+    font-size: 48px; font-weight: 900;
+    color: rgba(99,102,241,0.1);
+    position: absolute; top: 16px; right: 20px;
+    line-height: 1;
+}
+.strategy-card h3 { font-size: 18px; font-weight: 700; color: white; margin-bottom: 12px; }
+.strategy-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+.sc-result {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: 8px;
+    background: rgba(16,185,129,0.05);
+    border: 1px solid rgba(16,185,129,0.15);
+}
+.sc-arrow { color: var(--green); font-weight: 700; font-size: 16px; }
+.sc-result span:last-child { font-size: 13px; color: var(--text-muted); }
+.sc-result strong { color: var(--green); }
+
+/* --- Analytics --- */
+.split-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+}
+.split-content p { font-size: 16px; color: var(--text-muted); line-height: 1.8; margin: 20px 0; }
+.analytics-features { display: grid; gap: 12px; margin-top: 24px; }
+.af-item { display: flex; align-items: center; gap: 12px; }
+.af-check {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: rgba(16,185,129,0.1); color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.af-item span { font-size: 14px; color: var(--text); }
+
+.analytics-dashboard {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg); padding: 24px;
+}
+.ad-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.ad-card {
+    padding: 16px; background: var(--bg-surface);
+    border-radius: 10px;
+}
+.ad-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+.ad-value { display: block; font-size: 24px; font-weight: 800; color: white; }
+.ad-change { font-size: 12px; font-weight: 600; }
+.ad-change.up { color: var(--green); }
+
+.ad-chart { margin-bottom: 24px; }
+.chart-title { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
+.donut-chart {
+    position: relative; width: 160px; height: 160px; margin: 0 auto 16px;
+}
+.donut-chart svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.donut-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+}
+.dc-value { font-size: 20px; font-weight: 800; color: white; }
+.dc-label { font-size: 11px; color: var(--text-dim); }
+.donut-legend {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.donut-legend span { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.donut-legend i {
+    width: 8px; height: 8px; border-radius: 2px; display: inline-block;
+}
+
+.ad-heatmap { margin-top: 20px; }
+.heatmap-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 4px; margin-bottom: 8px;
+}
+.heatmap-cell {
+    aspect-ratio: 1; border-radius: 3px;
+    transition: var(--transition);
+}
+.heatmap-labels { display: flex; justify-content: space-around; }
+.heatmap-labels span { font-size: 10px; color: var(--text-dim); }
+
+/* --- Deliverability --- */
+.deliverability-card {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 60px; align-items: center;
+    padding: 60px; background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: var(--radius-xl);
+}
+.dc-content h2 { font-size: 36px; font-weight: 800; color: white; margin: 16px 0; line-height: 1.2; }
+.dc-content p { font-size: 16px; color: var(--text-muted); line-height: 1.7; max-width: 520px; }
+.dc-metrics { display: flex; gap: 32px; margin-top: 32px; }
+.dc-metric { text-align: center; }
+.dcm-value { display: block; font-size: 32px; font-weight: 900; color: white; }
+.dcm-label { font-size: 13px; color: var(--text-muted); }
+
+.inbox-animation { position: relative; width: 160px; height: 160px; }
+.inbox-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px; z-index: 1;
+}
+.inbox-rays {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+}
+.inbox-rays span {
+    position: absolute; width: 3px; height: 40px;
+    background: linear-gradient(to top, transparent, var(--primary-light));
+    border-radius: 2px; opacity: 0;
+    animation: ray 3s ease-in-out infinite;
+}
+.inbox-rays span:nth-child(1) { transform: rotate(0deg) translateY(-60px); animation-delay: 0s; }
+.inbox-rays span:nth-child(2) { transform: rotate(60deg) translateY(-60px); animation-delay: 0.5s; }
+.inbox-rays span:nth-child(3) { transform: rotate(120deg) translateY(-60px); animation-delay: 1s; }
+.inbox-rays span:nth-child(4) { transform: rotate(180deg) translateY(-60px); animation-delay: 1.5s; }
+.inbox-rays span:nth-child(5) { transform: rotate(240deg) translateY(-60px); animation-delay: 2s; }
+.inbox-rays span:nth-child(6) { transform: rotate(300deg) translateY(-60px); animation-delay: 2.5s; }
+@keyframes ray {
+    0%, 100% { opacity: 0; height: 20px; }
+    50% { opacity: 0.6; height: 40px; }
+}
+
+/* --- Integrations --- */
+.integrations-orbit {
+    position: relative; width: 500px; height: 500px;
+    margin: 0 auto 60px;
+}
+.orbit-center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px; border-radius: 20px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+}
+.orbit-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 1px dashed rgba(99,102,241,0.15);
+    animation: orbit-rotate 60s linear infinite;
+}
+.orbit-ring.ring-1 { inset: 60px; animation-duration: 40s; }
+.orbit-ring.ring-2 { inset: 10px; animation-duration: 60s; animation-direction: reverse; }
+@keyframes orbit-rotate { to { transform: rotate(360deg); } }
+.orbit-item {
+    position: absolute; top: 50%; left: 50%;
+    transform: rotate(var(--angle)) translateX(calc(50% + 60px)) rotate(calc(-1 * var(--angle)));
+    padding: 8px 16px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 8px; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); white-space: nowrap;
+    animation: counter-rotate 40s linear infinite;
+}
+.ring-2 .orbit-item {
+    transform: rotate(var(--angle)) translateX(calc(50% + 100px)) rotate(calc(-1 * var(--angle)));
+    animation-duration: 60s; animation-direction: reverse;
+}
+@keyframes counter-rotate { to { transform: rotate(-360deg); } }
+
+.integration-categories {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.ic-card {
+    padding: 24px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius); transition: var(--transition);
+}
+.ic-card:hover { border-color: var(--border); }
+.ic-card h4 { font-size: 16px; margin-bottom: 8px; }
+.ic-card p { font-size: 13px; color: var(--text-muted); }
+
+/* --- Pricing --- */
+.pricing-toggle {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin-bottom: 48px;
+}
+.toggle-label { font-size: 14px; color: var(--text-dim); transition: var(--transition); }
+.toggle-label.active { color: white; font-weight: 600; }
+.save-badge {
+    padding: 2px 8px; border-radius: 100px;
+    background: rgba(16,185,129,0.1); color: var(--green);
+    font-size: 11px; font-weight: 600;
+}
+.toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
+.toggle-switch input { display: none; }
+.toggle-slider {
+    position: absolute; inset: 0; border-radius: 13px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    transition: var(--transition);
+}
+.toggle-slider::after {
+    content: ''; position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--primary); transition: var(--transition);
+}
+.toggle-switch input:checked + .toggle-slider::after { transform: translateX(22px); }
+
+.pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; align-items: start;
+}
+.pricing-card {
+    padding: 36px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+    position: relative;
+}
+.pricing-card:hover {
+    transform: translateY(-4px); border-color: var(--border);
+}
+.pricing-card.popular {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.05));
+    transform: scale(1.02);
+}
+.pricing-card.popular:hover { transform: scale(1.04); }
+.popular-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    padding: 4px 16px; border-radius: 100px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: white; font-size: 12px; font-weight: 600;
+    white-space: nowrap;
+}
+.pc-header h3 { font-size: 22px; font-weight: 700; color: white; }
+.pc-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.pc-price { margin: 24px 0; }
+.price-amount { font-size: 48px; font-weight: 900; color: white; }
+.price-period { font-size: 16px; color: var(--text-muted); }
+.pc-features { margin-bottom: 28px; }
+.pcf { padding: 8px 0; font-size: 14px; color: var(--text); border-bottom: 1px solid var(--border-light); }
+.pcf.dim { color: var(--text-dim); }
+
+/* --- Testimonials --- */
+.testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.testimonial-card {
+    padding: 32px; background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+.testimonial-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.tc-stars { color: var(--orange); font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+.testimonial-card p { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+.tc-author { display: flex; align-items: center; gap: 12px; }
+.tc-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px;
+}
+.tc-name { display: block; font-size: 14px; font-weight: 600; color: white; }
+.tc-role { font-size: 12px; color: var(--text-dim); }
+
+/* --- CTA Section --- */
+.cta-section { padding: 80px 0 120px; }
+.cta-card {
+    text-align: center; padding: 80px 40px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: var(--radius-xl); position: relative; overflow: hidden;
+}
+.cta-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cta-card h2 { font-size: 42px; font-weight: 900; color: white; margin-bottom: 16px; position: relative; }
+.cta-card p { font-size: 18px; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto 36px; position: relative; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; position: relative; flex-wrap: wrap; }
+.cta-trust {
+    display: flex; gap: 24px; justify-content: center;
+    margin-top: 32px; position: relative; flex-wrap: wrap;
+}
+.cta-trust span { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* --- Footer --- */
+.footer { padding: 80px 0 40px; border-top: 1px solid var(--border-light); }
+.footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 48px;
+}
+.footer-brand p { font-size: 14px; color: var(--text-muted); margin-top: 16px; line-height: 1.7; max-width: 300px; }
+.footer-social { display: flex; gap: 12px; margin-top: 20px; }
+.footer-social a {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--bg-surface); border: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: var(--text-muted);
+    transition: var(--transition);
+}
+.footer-social a:hover { border-color: var(--primary); color: var(--primary-light); }
+.footer-col h4 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); padding: 4px 0; transition: var(--transition); }
+.footer-col a:hover { color: white; transform: translateX(4px); }
+.footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 32px; border-top: 1px solid var(--border-light);
+}
+.footer-bottom p { font-size: 13px; color: var(--text-dim); }
+
+/* --- Modals --- */
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: var(--transition);
+    padding: 24px;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 40px;
+    max-width: 480px; width: 100%;
+    transform: translateY(20px); transition: var(--transition);
+    max-height: 90vh; overflow-y: auto;
+}
+.modal-overlay.active .modal { transform: translateY(0); }
+.modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: var(--text-dim);
+    font-size: 24px; cursor: pointer; line-height: 1;
+}
+.modal h2 { font-size: 24px; font-weight: 800; color: white; margin-bottom: 4px; }
+.modal > p { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+.modal-form { display: flex; flex-direction: column; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.form-group input, .form-group select {
+    padding: 12px 14px; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--bg-surface);
+    color: white; font-size: 14px; font-family: var(--font);
+    transition: var(--transition);
+}
+.form-group input:focus, .form-group select:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+.form-group input::placeholder { color: var(--text-dim); }
+.form-row { display: flex; justify-content: space-between; align-items: center; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.checkbox-label {
+    font-size: 13px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.form-link { font-size: 13px; color: var(--primary-light); }
+.form-footer { font-size: 12px; color: var(--text-dim); text-align: center; }
+.form-footer a { color: var(--primary-light); }
+
+/* --- Toast --- */
+.toast {
+    position: fixed; bottom: 32px; right: 32px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 24px; background: var(--bg-card);
+    border: 1px solid var(--green);
+    border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    transform: translateY(100px); opacity: 0;
+    transition: var(--transition); z-index: 10000;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(16,185,129,0.15); color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+}
+.toast-message { font-size: 14px; font-weight: 500; color: white; }
+
+/* --- AOS Animations --- */
+[data-aos] { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+[data-aos].aos-animate { opacity: 1; transform: translateY(0); }
+[data-aos="fade-left"] { transform: translateX(30px); }
+[data-aos="fade-left"].aos-animate { transform: translateX(0); }
+[data-aos="fade-right"] { transform: translateX(-30px); }
+[data-aos="fade-right"].aos-animate { transform: translateX(0); }
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .hero .container { grid-template-columns: 1fr; text-align: center; }
+    .hero-subtitle { margin: 0 auto 36px; }
+    .hero-cta { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { display: none; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .strategy-grid { grid-template-columns: repeat(2, 1fr); }
+    .split-layout { grid-template-columns: 1fr; }
+    .automation-builder { grid-template-columns: 1fr; }
+    .builder-sidebar { border-right: none; border-bottom: 1px solid var(--border-light); }
+    .builder-sidebar .workflow-list { flex-direction: row; overflow-x: auto; padding-bottom: 8px; }
+    .builder-stats { border-left: none; border-top: 1px solid var(--border-light); }
+    .integrations-orbit { width: 350px; height: 350px; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    .pricing-card.popular { transform: none; }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .deliverability-card { grid-template-columns: 1fr; text-align: center; }
+    .dc-metrics { justify-content: center; }
+    .dc-visual { display: flex; justify-content: center; }
+}
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-actions .btn-ghost { display: none; }
+    .nav-toggle { display: flex; }
+    .features-grid { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+    .template-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .integration-categories { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .cta-card { padding: 48px 24px; }
+    .cta-card h2 { font-size: 28px; }
+    .hero-stats { flex-direction: column; gap: 16px; }
+    .stat-divider { width: 40px; height: 1px; }
+    .integrations-orbit { width: 280px; height: 280px; }
+}
+@media (max-width: 480px) {
+    .template-grid { grid-template-columns: 1fr; }
+    .dc-metrics { flex-direction: column; }
+    .hero-badge { font-size: 11px; }
+}
+
+/* Mobile Nav Open */
+.nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: rgba(11,11,26,0.95); backdrop-filter: blur(20px);
+    padding: 24px; gap: 16px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+</style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-ring">
+            <div class="loader-ring-inner"></div>
+        </div>
+        <p class="loader-text">Loading MailForge</p>
+    </div>
+
+    <!-- Floating Particles Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                        <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#6366F1"/>
+                                <stop offset="1" stop-color="#8B5CF6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">Mail<span class="logo-accent">Forge</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#automation" class="nav-link">Automation</a>
+                <a href="#templates" class="nav-link">Templates</a>
+                <a href="#analytics" class="nav-link">Analytics</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#integrations" class="nav-link">Integrations</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-ghost" onclick="openModal('loginModal')">Log In</button>
+                <button class="btn-primary" onclick="openModal('signupModal')">Start Free Trial</button>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge" data-aos="fade-up">
+                    <span class="badge-dot"></span>
+                    <span>Trusted by 50,000+ marketers worldwide</span>
+                </div>
+                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                    Email Marketing That<br>
+                    <span class="gradient-text">Actually Converts</span>
+                </h1>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                    AI-powered campaigns, hyper-personalization, predictive send times, and behavioral automation — everything you need to outperform every other platform in your stack.
+                </p>
+                <div class="hero-cta" data-aos="fade-up" data-aos-delay="300">
+                    <button class="btn-primary btn-lg" onclick="openModal('signupModal')">
+                        Start Free — No Card Required
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="btn-outline btn-lg" onclick="openModal('demoModal')">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 5L15 10L8 15V5Z" fill="currentColor"/></svg>
+                        Watch Demo
+                    </button>
+                </div>
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat">
+                        <span class="stat-number" data-count="99.7">0</span><span class="stat-suffix">%</span>
+                        <span class="stat-label">Deliverability</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="3.2">0</span><span class="stat-suffix">x</span>
+                        <span class="stat-label">More Revenue</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="47">0</span><span class="stat-suffix">%</span>
+                        <span class="stat-label">Higher Open Rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual" data-aos="fade-left" data-aos-delay="300">
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <div class="preview-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="preview-title">MailForge Dashboard</span>
+                    </div>
+                    <div class="preview-body">
+                        <div class="mini-chart">
+                            <div class="chart-header">
+                                <span>Campaign Performance</span>
+                                <span class="chart-badge up">↑ 24.5%</span>
+                            </div>
+                            <div class="chart-bars">
+                                <div class="bar" style="--height: 45%"><span>Mon</span></div>
+                                <div class="bar" style="--height: 65%"><span>Tue</span></div>
+                                <div class="bar" style="--height: 50%"><span>Wed</span></div>
+                                <div class="bar" style="--height: 80%"><span>Thu</span></div>
+                                <div class="bar" style="--height: 70%"><span>Fri</span></div>
+                                <div class="bar active" style="--height: 95%"><span>Sat</span></div>
+                                <div class="bar" style="--height: 60%"><span>Sun</span></div>
+                            </div>
+                        </div>
+                        <div class="mini-stats-row">
+                            <div class="mini-stat">
+                                <span class="ms-label">Sent</span>
+                                <span class="ms-value">124,589</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="ms-label">Opened</span>
+                                <span class="ms-value">58,432</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="ms-label">Clicked</span>
+                                <span class="ms-value">12,847</span>
+                            </div>
+                        </div>
+                        <div class="mini-email-preview">
+                            <div class="email-line subject"></div>
+                            <div class="email-line body long"></div>
+                            <div class="email-line body"></div>
+                            <div class="email-line cta"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-card card-1">
+                    <div class="fc-icon green">✓</div>
+                    <div class="fc-text">
+                        <span class="fc-title">Campaign Sent!</span>
+                        <span class="fc-sub">24,589 recipients</span>
+                    </div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="fc-icon blue">⚡</div>
+                    <div class="fc-text">
+                        <span class="fc-title">AI Optimized</span>
+                        <span class="fc-sub">Subject line score: 94</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-logos">
+            <p>Powering growth for industry leaders</p>
+            <div class="logo-strip">
+                <div class="client-logo">Shopify</div>
+                <div class="client-logo">Stripe</div>
+                <div class="client-logo">Notion</div>
+                <div class="client-logo">Figma</div>
+                <div class="client-logo">Vercel</div>
+                <div class="client-logo">Linear</div>
+                <div class="client-logo">Raycast</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Features</span>
+                <h2 class="section-title">Every Tool You Need.<br><span class="gradient-text">Nothing You Don't.</span></h2>
+                <p class="section-subtitle">Built from the ground up to outperform Mailchimp, ConvertKit, and ActiveCampaign on every metric that matters.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card featured" data-aos="fade-up">
+                    <div class="feature-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>AI Campaign Builder</h3>
+                    <p>Generate entire campaigns from a single prompt. Our AI writes subject lines, body copy, and CTAs trained on 2B+ high-converting emails.</p>
+                    <div class="feature-metrics">
+                        <span class="metric"><strong>94%</strong> subject line accuracy</span>
+                        <span class="metric"><strong>3.2x</strong> faster creation</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="50">
+                    <div class="feature-icon purple">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    </div>
+                    <h3>Hyper-Segmentation</h3>
+                    <p>Go beyond basic tags. Segment by behavior, purchase history, engagement score, predicted LTV, and 200+ custom attributes.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon teal">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                    </div>
+                    <h3>Predictive Analytics</h3>
+                    <p>Know who'll buy before they do. ML models predict conversions, churn risk, and optimal send windows per subscriber.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="feature-icon orange">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                    </div>
+                    <h3>Dynamic Content</h3>
+                    <p>One email, infinite versions. Personalize images, copy, offers, and layouts per recipient in real-time at send.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon pink">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    </div>
+                    <h3>Smart A/B/n Testing</h3>
+                    <p>Test up to 8 variants simultaneously. AI auto-allocates traffic to winners using multi-armed bandit algorithms.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="feature-icon red">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    </div>
+                    <h3>SMS + Push + Email</h3>
+                    <p>Unified inbox, unified campaigns. Reach subscribers on their preferred channel with intelligent fallback routing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation Section -->
+    <section class="section automation-section" id="automation">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Automation</span>
+                <h2 class="section-title">Set It. Forget It.<br><span class="gradient-text">Watch Revenue Grow.</span></h2>
+                <p class="section-subtitle">Visual workflow builder with 50+ pre-built automation recipes that activate in one click.</p>
+            </div>
+            <div class="automation-builder" data-aos="fade-up">
+                <div class="builder-sidebar">
+                    <h4>Workflow Library</h4>
+                    <div class="workflow-list">
+                        <div class="workflow-item active" data-workflow="welcome">
+                            <div class="wi-icon">👋</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Welcome Series</span>
+                                <span class="wi-desc">5-email onboarding flow</span>
+                            </div>
+                        </div>
+                        <div class="workflow-item" data-workflow="abandon">
+                            <div class="wi-icon">🛒</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Cart Abandonment</span>
+                                <span class="wi-desc">3-step recovery</span>
+                            </div>
+                        </div>
+                        <div class="workflow-item" data-workflow="winback">
+                            <div class="wi-icon">💎</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Win-Back Campaign</span>
+                                <span class="wi-desc">Re-engage dormant users</span>
+                            </div>
+                        </div>
+                        <div class="workflow-item" data-workflow="birthday">
+                            <div class="wi-icon">🎂</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Birthday / Anniversary</span>
+                                <span class="wi-desc">Personalized offers</span>
+                            </div>
+                        </div>
+                        <div class="workflow-item" data-workflow="upsell">
+                            <div class="wi-icon">📈</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Post-Purchase Upsell</span>
+                                <span class="wi-desc">Cross-sell recommendations</span>
+                            </div>
+                        </div>
+                        <div class="workflow-item" data-workflow="leadscoring">
+                            <div class="wi-icon">🎯</div>
+                            <div class="wi-info">
+                                <span class="wi-name">Lead Scoring</span>
+                                <span class="wi-desc">Qualify & route leads</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="builder-canvas">
+                    <div class="workflow-visual" id="workflowCanvas">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div class="builder-stats">
+                    <h4>Automation Impact</h4>
+                    <div class="auto-stat">
+                        <div class="as-bar"><div class="as-fill" style="--width: 89%"></div></div>
+                        <div class="as-info">
+                            <span>Open Rate</span><span class="as-val">89%</span>
+                        </div>
+                    </div>
+                    <div class="auto-stat">
+                        <div class="as-bar"><div class="as-fill purple" style="--width: 34%"></div></div>
+                        <div class="as-info">
+                            <span>Click Rate</span><span class="as-val">34%</span>
+                        </div>
+                    </div>
+                    <div class="auto-stat">
+                        <div class="as-bar"><div class="as-fill teal" style="--width: 12%"></div></div>
+                        <div class="as-info">
+                            <span>Conversion</span><span class="as-val">12.4%</span>
+                        </div>
+                    </div>
+                    <div class="auto-stat">
+                        <div class="as-bar"><div class="as-fill orange" style="--width: 67%"></div></div>
+                        <div class="as-info">
+                            <span>Revenue/Email</span><span class="as-val">$2.47</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email Builder / Templates Section -->
+    <section class="section templates-section" id="templates">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Templates</span>
+                <h2 class="section-title">Drag. Drop. <span class="gradient-text">Deploy.</span></h2>
+                <p class="section-subtitle">500+ responsive templates. Pixel-perfect drag-and-drop builder. Or let AI design it for you.</p>
+            </div>
+            <div class="template-showcase" data-aos="fade-up">
+                <div class="template-tabs">
+                    <button class="tab-btn active" data-tab="ecommerce">E-Commerce</button>
+                    <button class="tab-btn" data-tab="saas">SaaS</button>
+                    <button class="tab-btn" data-tab="newsletter">Newsletter</button>
+                    <button class="tab-btn" data-tab="transactional">Transactional</button>
+                    <button class="tab-btn" data-tab="events">Events</button>
+                </div>
+                <div class="template-grid" id="templateGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="builder-demo" data-aos="fade-up">
+                <div class="demo-window">
+                    <div class="demo-header">
+                        <div class="preview-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="demo-tabs">
+                            <span class="demo-tab active">Visual Editor</span>
+                            <span class="demo-tab">HTML</span>
+                            <span class="demo-tab">Preview</span>
+                        </div>
+                    </div>
+                    <div class="demo-body">
+                        <div class="demo-sidebar">
+                            <div class="demo-block" draggable="true">
+                                <span>📝</span> Text
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>🖼️</span> Image
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>🔘</span> Button
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>📊</span> Columns
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>🎨</span> Hero
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>📦</span> Product
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>⏱️</span> Timer
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>📱</span> Social
+                            </div>
+                            <div class="demo-block" draggable="true">
+                                <span>🤖</span> AI Block
+                            </div>
+                        </div>
+                        <div class="demo-canvas">
+                            <div class="email-builder-preview">
+                                <div class="ebp-header">
+                                    <div class="ebp-logo"></div>
+                                </div>
+                                <div class="ebp-hero">
+                                    <div class="ebp-hero-img"></div>
+                                    <h3>Summer Collection is Here 🌊</h3>
+                                    <p>Discover our newest arrivals with up to 40% off</p>
+                                    <button class="ebp-cta">Shop Now</button>
+                                </div>
+                                <div class="ebp-products">
+                                    <div class="ebp-product">
+                                        <div class="ebp-product-img"></div>
+                                        <span class="ebp-product-name">Premium Tee</span>
+                                        <span class="ebp-product-price">$49</span>
+                                    </div>
+                                    <div class="ebp-product">
+                                        <div class="ebp-product-img"></div>
+                                        <span class="ebp-product-name">Linen Shorts</span>
+                                        <span class="ebp-product-price">$65</span>
+                                    </div>
+                                    <div class="ebp-product">
+                                        <div class="ebp-product-img"></div>
+                                        <span class="ebp-product-name">Beach Hat</span>
+                                        <span class="ebp-product-price">$35</span>
+                                    </div>
+                                </div>
+                                <div class="ebp-footer">
+                                    <div class="ebp-social">
+                                        <span>📘</span><span>🐦</span><span>📸</span>
+                                    </div>
+                                    <p>Unsubscribe · Preferences · View in browser</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Strategy Section -->
+    <section class="section strategy-section" id="strategy">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Advanced Strategy</span>
+                <h2 class="section-title">Strategies That <span class="gradient-text">Outperform</span></h2>
+                <p class="section-subtitle">Built-in advanced methodologies that turn email from a cost center into your highest-ROI channel.</p>
+            </div>
+            <div class="strategy-grid">
+                <div class="strategy-card" data-aos="fade-up">
+                    <div class="sc-number">01</div>
+                    <h3>Predictive Send-Time Optimization</h3>
+                    <p>ML analyzes each subscriber's open patterns to find their optimal engagement window — down to the minute. No more guessing "Tuesday at 10am."</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>41%</strong> higher open rates vs. batch send</span>
+                    </div>
+                </div>
+                <div class="strategy-card" data-aos="fade-up" data-aos-delay="50">
+                    <div class="sc-number">02</div>
+                    <h3>Behavioral Trigger Cascades</h3>
+                    <p>Chain triggers across channels: email open → SMS follow-up → push notification → retargeting ad. One subscriber action cascades into a multi-touch journey.</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>67%</strong> more touchpoints per journey</span>
+                    </div>
+                </div>
+                <div class="strategy-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="sc-number">03</div>
+                    <h3>Engagement Scoring & Sunset Flows</h3>
+                    <p>Automatically score engagement health. Warm up cold subscribers with win-back sequences. Sunset truly dead contacts to protect deliverability.</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>23%</strong> improvement in sender reputation</span>
+                    </div>
+                </div>
+                <div class="strategy-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="sc-number">04</div>
+                    <h3>Revenue Attribution & Cohort Analysis</h3>
+                    <p>Multi-touch revenue attribution down to the individual email. Track cohort performance, LTV impact, and true incrementality — not just last-click.</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>3.8x</strong> more accurate ROI measurement</span>
+                    </div>
+                </div>
+                <div class="strategy-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="sc-number">05</div>
+                    <h3>AI Content Personalization</h3>
+                    <p>Each subscriber sees a uniquely generated email. AI rewrites subject lines, adjusts tone, swaps product recommendations, and adapts CTAs per recipient.</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>156%</strong> increase in click-through rate</span>
+                    </div>
+                </div>
+                <div class="strategy-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="sc-number">06</div>
+                    <h3>Deliverability Fortress</h3>
+                    <p>Automatic IP warming, DMARC/SPF/DKIM management, blocklist monitoring, inbox placement testing, and AI spam-score checking before every send.</p>
+                    <div class="sc-result">
+                        <span class="sc-arrow">↑</span>
+                        <span><strong>99.7%</strong> inbox placement rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="section analytics-section" id="analytics">
+        <div class="container">
+            <div class="split-layout">
+                <div class="split-content" data-aos="fade-right">
+                    <span class="section-tag">Analytics</span>
+                    <h2 class="section-title">Real-Time Intelligence.<br><span class="gradient-text">Not Just Reports.</span></h2>
+                    <p>Live dashboards that go beyond opens and clicks. Track revenue per email, subscriber lifetime value, engagement decay, content heatmaps, and predictive churn scores — all in one place.</p>
+                    <div class="analytics-features">
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Real-time campaign monitoring</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Revenue attribution per email</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Click heatmaps & scroll tracking</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Subscriber health scoring</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Predictive churn alerts</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Cohort & funnel analysis</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Competitor benchmarking</span>
+                        </div>
+                        <div class="af-item">
+                            <div class="af-check">✓</div>
+                            <span>Custom report builder</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="split-visual" data-aos="fade-left">
+                    <div class="analytics-dashboard">
+                        <div class="ad-row">
+                            <div class="ad-card">
+                                <span class="ad-label">Revenue Today</span>
+                                <span class="ad-value">$12,847</span>
+                                <span class="ad-change up">+18.3%</span>
+                            </div>
+                            <div class="ad-card">
+                                <span class="ad-label">Active Subscribers</span>
+                                <span class="ad-value">284,501</span>
+                                <span class="ad-change up">+2.1%</span>
+                            </div>
+                        </div>
+                        <div class="ad-chart">
+                            <div class="chart-title">Revenue Attribution</div>
+                            <div class="donut-chart">
+                                <svg viewBox="0 0 120 120">
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#1e1e2e" stroke-width="20"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#6366F1" stroke-width="20" stroke-dasharray="125 189" stroke-dashoffset="0" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#8B5CF6" stroke-width="20" stroke-dasharray="75 239" stroke-dashoffset="-125" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#06B6D4" stroke-width="20" stroke-dasharray="50 264" stroke-dashoffset="-200" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#F59E0B" stroke-width="20" stroke-dasharray="64 250" stroke-dashoffset="-250" class="donut-segment"/>
+                                </svg>
+                                <div class="donut-center">
+                                    <span class="dc-value">$48.2K</span>
+                                    <span class="dc-label">This Month</span>
+                                </div>
+                            </div>
+                            <div class="donut-legend">
+                                <span><i style="background:#6366F1"></i> Welcome Series (40%)</span>
+                                <span><i style="background:#8B5CF6"></i> Abandoned Cart (24%)</span>
+                                <span><i style="background:#06B6D4"></i> Newsletter (16%)</span>
+                                <span><i style="background:#F59E0B"></i> Promotions (20%)</span>
+                            </div>
+                        </div>
+                        <div class="ad-heatmap">
+                            <div class="chart-title">Engagement Heatmap</div>
+                            <div class="heatmap-grid">
+                                <!-- Generated by JS -->
+                            </div>
+                            <div class="heatmap-labels">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deliverability Section -->
+    <section class="section deliverability-section">
+        <div class="container">
+            <div class="deliverability-card" data-aos="fade-up">
+                <div class="dc-content">
+                    <span class="section-tag light">Deliverability</span>
+                    <h2>99.7% Inbox Placement.<br>Not Spam Folder.</h2>
+                    <p>Dedicated IPs, automatic warming, real-time blocklist monitoring, DMARC/SPF/DKIM wizards, and AI spam detection that catches issues before you hit send.</p>
+                    <div class="dc-metrics">
+                        <div class="dc-metric">
+                            <span class="dcm-value">99.7%</span>
+                            <span class="dcm-label">Inbox Rate</span>
+                        </div>
+                        <div class="dc-metric">
+                            <span class="dcm-value">&lt;0.1%</span>
+                            <span class="dcm-label">Spam Rate</span>
+                        </div>
+                        <div class="dc-metric">
+                            <span class="dcm-value">&lt;0.01%</span>
+                            <span class="dcm-label">Bounce Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dc-visual">
+                    <div class="inbox-animation">
+                        <div class="inbox-icon">📬</div>
+                        <div class="inbox-rays">
+                            <span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations Section -->
+    <section class="section integrations-section" id="integrations">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Integrations</span>
+                <h2 class="section-title">Connects to <span class="gradient-text">Everything</span></h2>
+                <p class="section-subtitle">300+ native integrations. Plus webhooks and API for anything custom.</p>
+            </div>
+            <div class="integrations-orbit" data-aos="fade-up">
+                <div class="orbit-center">
+                    <div class="orbit-logo">
+                        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="url(#logo-gradient2)"/>
+                            <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <defs><linearGradient id="logo-gradient2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="orbit-ring ring-1">
+                    <div class="orbit-item" style="--angle: 0deg">Shopify</div>
+                    <div class="orbit-item" style="--angle: 60deg">WooCommerce</div>
+                    <div class="orbit-item" style="--angle: 120deg">Stripe</div>
+                    <div class="orbit-item" style="--angle: 180deg">Zapier</div>
+                    <div class="orbit-item" style="--angle: 240deg">Salesforce</div>
+                    <div class="orbit-item" style="--angle: 300deg">HubSpot</div>
+                </div>
+                <div class="orbit-ring ring-2">
+                    <div class="orbit-item" style="--angle: 30deg">WordPress</div>
+                    <div class="orbit-item" style="--angle: 90deg">Slack</div>
+                    <div class="orbit-item" style="--angle: 150deg">Segment</div>
+                    <div class="orbit-item" style="--angle: 210deg">BigCommerce</div>
+                    <div class="orbit-item" style="--angle: 270deg">Webflow</div>
+                    <div class="orbit-item" style="--angle: 330deg">GA4</div>
+                </div>
+            </div>
+            <div class="integration-categories" data-aos="fade-up">
+                <div class="ic-card">
+                    <h4>🛒 E-Commerce</h4>
+                    <p>Shopify, WooCommerce, BigCommerce, Magento, Squarespace</p>
+                </div>
+                <div class="ic-card">
+                    <h4>📊 Analytics</h4>
+                    <p>Google Analytics, Mixpanel, Amplitude, Segment, Heap</p>
+                </div>
+                <div class="ic-card">
+                    <h4>🔧 CRM</h4>
+                    <p>Salesforce, HubSpot, Pipedrive, Zoho, Monday</p>
+                </div>
+                <div class="ic-card">
+                    <h4>⚡ Automation</h4>
+                    <p>Zapier, Make, n8n, Tray.io, Workato</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Pricing</span>
+                <h2 class="section-title">Simple, Honest <span class="gradient-text">Pricing</span></h2>
+                <p class="section-subtitle">No hidden fees. No per-email charges. Scale without surprises.</p>
+            </div>
+            <div class="pricing-toggle" data-aos="fade-up">
+                <span class="toggle-label active">Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricingToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Annual <span class="save-badge">Save 25%</span></span>
+            </div>
+            <div class="pricing-grid" data-aos="fade-up">
+                <div class="pricing-card">
+                    <div class="pc-header">
+                        <h3>Starter</h3>
+                        <p>For growing businesses</p>
+                    </div>
+                    <div class="pc-price">
+                        <span class="price-amount monthly">$29</span>
+                        <span class="price-amount annual" style="display:none">$22</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="pc-features">
+                        <div class="pcf">✓ Up to 5,000 subscribers</div>
+                        <div class="pcf">✓ Unlimited emails</div>
+                        <div class="pcf">✓ Drag & drop builder</div>
+                        <div class="pcf">✓ 50+ templates</div>
+                        <div class="pcf">✓ Basic automation (5 workflows)</div>
+                        <div class="pcf">✓ A/B testing</div>
+                        <div class="pcf">✓ Email support</div>
+                        <div class="pcf dim">✗ AI campaign builder</div>
+                        <div class="pcf dim">✗ Predictive send time</div>
+                    </div>
+                    <button class="btn-outline btn-block" onclick="openModal('signupModal')">Start Free Trial</button>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pc-header">
+                        <h3>Growth</h3>
+                        <p>For scaling teams</p>
+                    </div>
+                    <div class="pc-price">
+                        <span class="price-amount monthly">$79</span>
+                        <span class="price-amount annual" style="display:none">$59</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="pc-features">
+                        <div class="pcf">✓ Up to 25,000 subscribers</div>
+                        <div class="pcf">✓ Unlimited emails</div>
+                        <div class="pcf">✓ AI campaign builder</div>
+                        <div class="pcf">✓ 500+ templates</div>
+                        <div class="pcf">✓ Unlimited automation</div>
+                        <div class="pcf">✓ Smart A/B/n testing</div>
+                        <div class="pcf">✓ Predictive send time</div>
+                        <div class="pcf">✓ SMS + Push channels</div>
+                        <div class="pcf">✓ Priority support</div>
+                    </div>
+                    <button class="btn-primary btn-block" onclick="openModal('signupModal')">Start Free Trial</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pc-header">
+                        <h3>Enterprise</h3>
+                        <p>For high-volume senders</p>
+                    </div>
+                    <div class="pc-price">
+                        <span class="price-amount monthly">$249</span>
+                        <span class="price-amount annual" style="display:none">$187</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="pc-features">
+                        <div class="pcf">✓ Unlimited subscribers</div>
+                        <div class="pcf">✓ Unlimited everything</div>
+                        <div class="pcf">✓ Dedicated IP addresses</div>
+                        <div class="pcf">✓ Custom AI model training</div>
+                        <div class="pcf">✓ Revenue attribution</div>
+                        <div class="pcf">✓ Custom integrations</div>
+                        <div class="pcf">✓ SLA guarantee</div>
+                        <div class="pcf">✓ Dedicated account manager</div>
+                        <div class="pcf">✓ SSO & advanced security</div>
+                    </div>
+                    <button class="btn-outline btn-block" onclick="openModal('signupModal')">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">Loved by <span class="gradient-text">Marketers</span></h2>
+            </div>
+            <div class="testimonials-grid" data-aos="fade-up">
+                <div class="testimonial-card">
+                    <div class="tc-stars">★★★★★</div>
+                    <p>"Switched from Mailchimp and saw a 47% increase in open rates within the first month. The AI subject line generator is genuinely magical."</p>
+                    <div class="tc-author">
+                        <div class="tc-avatar" style="background: linear-gradient(135deg, #6366F1, #8B5CF6)">SK</div>
+                        <div class="tc-info">
+                            <span class="tc-name">Sarah Kim</span>
+                            <span class="tc-role">Head of Growth, Luminary</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="tc-stars">★★★★★</div>
+                    <p>"The behavioral automation alone paid for itself in week one. Cart abandonment recovery went from 8% to 31%. Not even exaggerating."</p>
+                    <div class="tc-author">
+                        <div class="tc-avatar" style="background: linear-gradient(135deg, #06B6D4, #0EA5E9)">MR</div>
+                        <div class="tc-info">
+                            <span class="tc-name">Marcus Rivera</span>
+                            <span class="tc-role">E-Commerce Director, Threads & Co</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="tc-stars">★★★★★</div>
+                    <p>"Finally, analytics that make sense. The revenue attribution changed how our entire team thinks about email. It's not a cost center anymore — it's our #1 channel."</p>
+                    <div class="tc-author">
+                        <div class="tc-avatar" style="background: linear-gradient(135deg, #F59E0B, #EF4444)">JP</div>
+                        <div class="tc-info">
+                            <span class="tc-name">Jessica Park</span>
+                            <span class="tc-role">CMO, DataStack</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-card" data-aos="fade-up">
+                <h2>Ready to Outperform?</h2>
+                <p>Join 50,000+ marketers who switched to MailForge and never looked back. Start your free 14-day trial — no credit card required.</p>
+                <div class="cta-actions">
+                    <button class="btn-white btn-lg" onclick="openModal('signupModal')">
+                        Start Free Trial
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="btn-ghost-white btn-lg" onclick="openModal('demoModal')">Book a Demo</button>
+                </div>
+                <div class="cta-trust">
+                    <span>🔒 SOC 2 Compliant</span>
+                    <span>🌍 GDPR Ready</span>
+                    <span>⚡ 99.99% Uptime</span>
+                    <span>🏆 G2 Leader 2025</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">
+                        <div class="logo-icon">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="8" fill="url(#logo-gradient3)"/>
+                                <path d="M8 12L16 18L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M8 12V20C8 21.1 8.9 22 10 22H22C23.1 22 24 21.1 24 20V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                <defs><linearGradient id="logo-gradient3" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">Mail<span class="logo-accent">Forge</span></span>
+                    </a>
+                    <p>The email marketing platform that actually delivers results. AI-powered, data-driven, built for growth.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Twitter">𝕏</a>
+                        <a href="#" aria-label="LinkedIn">in</a>
+                        <a href="#" aria-label="GitHub">GH</a>
+                        <a href="#" aria-label="YouTube">YT</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <a href="#">Email Builder</a>
+                    <a href="#">Automation</a>
+                    <a href="#">Analytics</a>
+                    <a href="#">Templates</a>
+                    <a href="#">Integrations</a>
+                    <a href="#">API</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Email Academy</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Community</a>
+                    <a href="#">Webinars</a>
+                    <a href="#">Changelog</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press</a>
+                    <a href="#">Partners</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">GDPR</a>
+                    <a href="#">Security</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MailForge. All rights reserved.</p>
+                <p>Made with 💜 for marketers who care about results.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            <h2>Start Your Free Trial</h2>
+            <p>14 days free. No credit card required.</p>
+            <form class="modal-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="John Smith" required>
+                </div>
+                <div class="form-group">
+                    <label>Work Email</label>
+                    <input type="email" placeholder="john@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" placeholder="Acme Inc">
+                </div>
+                <div class="form-group">
+                    <label>Subscriber Count</label>
+                    <select>
+                        <option>1 - 1,000</option>
+                        <option>1,000 - 5,000</option>
+                        <option>5,000 - 25,000</option>
+                        <option>25,000 - 100,000</option>
+                        <option>100,000+</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary btn-block">Create Free Account</button>
+                <p class="form-footer">By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            <h2>Welcome Back</h2>
+            <p>Log in to your MailForge account</p>
+            <form class="modal-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="john@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-row">
+                    <label class="checkbox-label"><input type="checkbox"> Remember me</label>
+                    <a href="#" class="form-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary btn-block">Log In</button>
+                <p class="form-footer">Don't have an account? <a href="#" onclick="closeModal('loginModal');openModal('signupModal')">Sign up free</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="demoModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('demoModal')">&times;</button>
+            <h2>Book a Demo</h2>
+            <p>See MailForge in action with a personalized walkthrough</p>
+            <form class="modal-form" onsubmit="handleDemo(event)">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" placeholder="Smith" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Work Email</label>
+                    <input type="email" placeholder="john@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Company Size</label>
+                    <select>
+                        <option>1-10 employees</option>
+                        <option>11-50 employees</option>
+                        <option>51-200 employees</option>
+                        <option>201-1000 employees</option>
+                        <option>1000+ employees</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>What are you most interested in?</label>
+                    <select>
+                        <option>AI Campaign Builder</option>
+                        <option>Automation Workflows</option>
+                        <option>Analytics & Attribution</option>
+                        <option>Deliverability</option>
+                        <option>Everything!</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary btn-block">Request Demo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-message" id="toastMessage">Success!</div>
+    </div>
+
+    <script>
+// ============================================
+// MAILFORGE - Application JavaScript
+// ============================================
+
+// --- Preloader ---
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('preloader').classList.add('hidden');
+        initAOS();
+        animateCounters();
+    }, 800);
+});
+
+// --- Particles Background ---
+(function initParticles() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let w, h;
+
+    function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.r = Math.random() * 2 + 0.5;
+            this.alpha = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(99, 102, 241, ${this.alpha})`;
+            ctx.fill();
+        }
+    }
+
+    const count = Math.min(80, Math.floor(w * h / 15000));
+    for (let i = 0; i < count; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => { p.update(); p.draw(); });
+
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(99, 102, 241, ${0.08 * (1 - dist / 120)})`;
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+
+// --- Navbar Scroll ---
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// --- Mobile Nav Toggle ---
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle?.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+});
+
+// Close mobile nav on link click
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// --- Smooth Scroll ---
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// --- Simple AOS (Animate on Scroll) ---
+function initAOS() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = entry.target.dataset.aosDelay || 0;
+                setTimeout(() => {
+                    entry.target.classList.add('aos-animate');
+                }, parseInt(delay));
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+}
+
+// --- Counter Animation ---
+function animateCounters() {
+    const counters = document.querySelectorAll('[data-count]');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseFloat(el.dataset.count);
+                const duration = 2000;
+                const start = performance.now();
+                const isDecimal = target % 1 !== 0;
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+                    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(c => observer.observe(c));
+}
+
+// --- Workflow Builder ---
+const workflows = {
+    welcome: [
+        { type: 'trigger', icon: '📥', iconClass: 'green', label: 'New Subscriber', sub: 'Signup form submitted' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 1 minute', sub: 'Immediate warmup' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'Send Welcome Email', sub: 'Personalized greeting' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 2 days', sub: 'Engagement window' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Opened Email?', sub: 'Check engagement' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'Send Value Email', sub: 'Tips & resources' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 3 days', sub: '' },
+        { type: 'action', icon: '🎁', iconClass: 'teal', label: 'Send Offer Email', sub: '15% first purchase' },
+    ],
+    abandon: [
+        { type: 'trigger', icon: '🛒', iconClass: 'green', label: 'Cart Abandoned', sub: 'Item left in cart' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 1 hour', sub: 'Cooling period' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'Reminder Email', sub: 'Show cart items' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Purchased?', sub: 'Check conversion' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 24 hours', sub: '' },
+        { type: 'action', icon: '💰', iconClass: 'teal', label: 'Discount Email', sub: '10% off cart' },
+    ],
+    winback: [
+        { type: 'trigger', icon: '😴', iconClass: 'green', label: '90 Days Inactive', sub: 'No opens or clicks' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'We Miss You Email', sub: 'Personal touch' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 5 days', sub: '' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Re-engaged?', sub: 'Track activity' },
+        { type: 'action', icon: '🎁', iconClass: 'teal', label: 'Exclusive Offer', sub: '25% comeback deal' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 7 days', sub: '' },
+        { type: 'action', icon: '👋', iconClass: 'blue', label: 'Final Goodbye', sub: 'Sunset or re-engage' },
+    ],
+    birthday: [
+        { type: 'trigger', icon: '🎂', iconClass: 'green', label: 'Birthday Match', sub: '7 days before' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'Birthday Preview', sub: 'Teaser of gift' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait until Birthday', sub: '' },
+        { type: 'action', icon: '🎁', iconClass: 'teal', label: 'Birthday Gift Email', sub: 'Special discount code' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 3 days', sub: '' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Used Gift?', sub: 'Track redemption' },
+    ],
+    upsell: [
+        { type: 'trigger', icon: '✅', iconClass: 'green', label: 'Purchase Complete', sub: 'Order confirmed' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 2 hours', sub: '' },
+        { type: 'action', icon: '📧', iconClass: 'blue', label: 'Thank You Email', sub: 'Order details + tips' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait 5 days', sub: 'Usage window' },
+        { type: 'action', icon: '📈', iconClass: 'teal', label: 'Cross-Sell Email', sub: 'AI recommendations' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Clicked Product?', sub: '' },
+        { type: 'action', icon: '💎', iconClass: 'blue', label: 'VIP Offer', sub: 'Loyalty reward' },
+    ],
+    leadscoring: [
+        { type: 'trigger', icon: '📥', iconClass: 'green', label: 'Lead Captured', sub: 'Form or landing page' },
+        { type: 'action', icon: '🎯', iconClass: 'blue', label: 'Score Lead', sub: 'Behavioral + firmographic' },
+        { type: 'condition', icon: '🔀', iconClass: 'orange', label: 'Score > 50?', sub: 'Hot lead threshold' },
+        { type: 'action', icon: '📧', iconClass: 'teal', label: 'Nurture Sequence', sub: 'Educational content' },
+        { type: 'delay', icon: '⏳', iconClass: 'purple', label: 'Wait for Score Change', sub: '' },
+        { type: 'action', icon: '🔔', iconClass: 'blue', label: 'Notify Sales Team', sub: 'Slack + CRM update' },
+    ],
+};
+
+function renderWorkflow(name) {
+    const canvas = document.getElementById('workflowCanvas');
+    if (!canvas) return;
+    const flow = workflows[name] || workflows.welcome;
+    canvas.innerHTML = '';
+
+    flow.forEach((node, i) => {
+        const el = document.createElement('div');
+        el.className = `wf-node ${node.type}`;
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        el.innerHTML = `
+            <div class="wf-icon ${node.iconClass}">${node.icon}</div>
+            <div>
+                <span class="wf-label">${node.label}</span>
+                ${node.sub ? `<span class="wf-sublabel">${node.sub}</span>` : ''}
+            </div>
+        `;
+        canvas.appendChild(el);
+
+        setTimeout(() => {
+            el.style.transition = 'all 0.4s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, i * 80);
+
+        if (i < flow.length - 1) {
+            const conn = document.createElement('div');
+            conn.className = 'wf-connector';
+            canvas.appendChild(conn);
+        }
+    });
+}
+
+// Workflow item clicks
+document.querySelectorAll('.workflow-item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.workflow-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        renderWorkflow(item.dataset.workflow);
+    });
+});
+
+// Initial render
+renderWorkflow('welcome');
+
+// --- Template Gallery ---
+const templates = {
+    ecommerce: [
+        { name: 'Summer Sale', type: 'Promotional', colors: ['#667eea', '#764ba2'] },
+        { name: 'New Arrivals', type: 'Product Launch', colors: ['#f093fb', '#f5576c'] },
+        { name: 'Flash Deal', type: 'Urgency', colors: ['#4facfe', '#00f2fe'] },
+        { name: 'Loyalty Reward', type: 'Retention', colors: ['#43e97b', '#38f9d7'] },
+    ],
+    saas: [
+        { name: 'Product Update', type: 'Changelog', colors: ['#6366F1', '#8B5CF6'] },
+        { name: 'Trial Ending', type: 'Conversion', colors: ['#F59E0B', '#EF4444'] },
+        { name: 'Feature Highlight', type: 'Engagement', colors: ['#06B6D4', '#0EA5E9'] },
+        { name: 'Onboarding', type: 'Activation', colors: ['#10B981', '#34D399'] },
+    ],
+    newsletter: [
+        { name: 'Weekly Digest', type: 'Curated', colors: ['#8B5CF6', '#EC4899'] },
+        { name: 'Industry Insights', type: 'Educational', colors: ['#3B82F6', '#6366F1'] },
+        { name: 'Personal Update', type: 'Creator', colors: ['#F97316', '#F59E0B'] },
+        { name: 'Community Roundup', type: 'Social', colors: ['#14B8A6', '#06B6D4'] },
+    ],
+    transactional: [
+        { name: 'Order Confirmation', type: 'Receipt', colors: ['#10B981', '#059669'] },
+        { name: 'Shipping Update', type: 'Tracking', colors: ['#3B82F6', '#2563EB'] },
+        { name: 'Password Reset', type: 'Security', colors: ['#EF4444', '#DC2626'] },
+        { name: 'Invoice', type: 'Billing', colors: ['#6366F1', '#4F46E5'] },
+    ],
+    events: [
+        { name: 'Webinar Invite', type: 'Registration', colors: ['#8B5CF6', '#7C3AED'] },
+        { name: 'Event Reminder', type: 'Follow-up', colors: ['#F59E0B', '#D97706'] },
+        { name: 'Post-Event', type: 'Thank You', colors: ['#EC4899', '#DB2777'] },
+        { name: 'Conference', type: 'Multi-day', colors: ['#06B6D4', '#0891B2'] },
+    ],
+};
+
+function renderTemplates(category) {
+    const grid = document.getElementById('templateGrid');
+    if (!grid) return;
+    const items = templates[category] || templates.ecommerce;
+    grid.innerHTML = '';
+
+    items.forEach((t, i) => {
+        const card = document.createElement('div');
+        card.className = 'template-card';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        card.innerHTML = `
+            <div class="template-thumb">
+                <div class="template-thumb-inner" style="background: linear-gradient(135deg, ${t.colors[0]}15, ${t.colors[1]}15)">
+                    <div class="tt-header" style="background: ${t.colors[0]}30; width: 50%"></div>
+                    <div class="tt-hero" style="background: linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]}); opacity: 0.6"></div>
+                    <div class="tt-body">
+                        <div class="tt-line" style="background: ${t.colors[0]}20; width: 80%"></div>
+                        <div class="tt-line" style="background: ${t.colors[0]}15; width: 100%"></div>
+                        <div class="tt-line" style="background: ${t.colors[0]}15; width: 60%"></div>
+                        <div class="tt-cta" style="background: ${t.colors[0]}; opacity: 0.5"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="template-info">
+                <h4>${t.name}</h4>
+                <span>${t.type}</span>
+            </div>
+        `;
+        grid.appendChild(card);
+
+        setTimeout(() => {
+            card.style.transition = 'all 0.4s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, i * 100);
+    });
+}
+
+// Tab clicks
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTemplates(btn.dataset.tab);
+    });
+});
+
+renderTemplates('ecommerce');
+
+// --- Heatmap ---
+(function generateHeatmap() {
+    const grid = document.querySelector('.heatmap-grid');
+    if (!grid) return;
+    const hours = 6;
+    for (let h = 0; h < hours; h++) {
+        for (let d = 0; d < 7; d++) {
+            const cell = document.createElement('div');
+            cell.className = 'heatmap-cell';
+            const intensity = Math.random();
+            const alpha = 0.1 + intensity * 0.8;
+            cell.style.background = intensity > 0.7
+                ? `rgba(99, 102, 241, ${alpha})`
+                : intensity > 0.4
+                    ? `rgba(139, 92, 246, ${alpha * 0.6})`
+                    : `rgba(255, 255, 255, ${alpha * 0.1})`;
+            grid.appendChild(cell);
+        }
+    }
+})();
+
+// --- Pricing Toggle ---
+const pricingToggle = document.getElementById('pricingToggle');
+pricingToggle?.addEventListener('change', () => {
+    const isAnnual = pricingToggle.checked;
+    document.querySelectorAll('.price-amount.monthly').forEach(el => {
+        el.style.display = isAnnual ? 'none' : 'inline';
+    });
+    document.querySelectorAll('.price-amount.annual').forEach(el => {
+        el.style.display = isAnnual ? 'inline' : 'none';
+    });
+    document.querySelectorAll('.toggle-label').forEach((label, i) => {
+        label.classList.toggle('active', i === (isAnnual ? 1 : 0));
+    });
+});
+
+// --- Modals ---
+function openModal(id) {
+    document.getElementById(id)?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+    document.getElementById(id)?.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+});
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(m => {
+            m.classList.remove('active');
+        });
+        document.body.style.overflow = '';
+    }
+});
+
+// --- Form Handlers ---
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    const msg = document.getElementById('toastMessage');
+    msg.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+function handleSignup(e) {
+    e.preventDefault();
+    closeModal('signupModal');
+    showToast('🎉 Account created! Check your email to get started.');
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    closeModal('loginModal');
+    showToast('Welcome back! Redirecting to dashboard...');
+}
+
+function handleDemo(e) {
+    e.preventDefault();
+    closeModal('demoModal');
+    showToast('📅 Demo booked! We\'ll send a calendar invite shortly.');
+}
+
+// --- Active Nav Link ---
+const sections = document.querySelectorAll('.section[id]');
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 100;
+    sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (link) {
+            link.classList.toggle('active', scrollY >= top && scrollY < top + height);
+        }
+    });
+});
+
+// Make functions globally accessible
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.handleSignup = handleSignup;
+window.handleLogin = handleLogin;
+window.handleDemo = handleDemo;
+
+</script>
+</body>
+</html>
